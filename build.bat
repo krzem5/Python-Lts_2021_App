@@ -1,3 +1,3 @@
 @echo off
 cls
-python src/main.py
+python build.py

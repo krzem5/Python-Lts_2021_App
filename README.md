@@ -1,2 +1,2 @@
-# Python - Lts 2021 App
-(This is an auto - generated file.)
+# Python - School Website
+Please run `index.bat` and navigate into `build/web/`
