@@ -16,7 +16,14 @@ document.addEventListener("DOMContentLoaded",()=>{
 	}
 	se.onclick=()=>{
 		if (nme.value.length>0){
-			console.log(lvl,nme.value)
+			fetch("/api/create",{method:"POST",body:JSON.stringify({name:nme.value,level:lvl})}).catch((e)=>0).then((e)=>(e?e.json():0)).then((e)=>{
+				if (!e||e.status){
+					console.log(e);
+				}
+				else{
+					location.href=e.url;
+				}
+			});
 		}
 	}
 },false);
