@@ -3,21 +3,19 @@ import datetime
 import inspect
 import threading
 import time
-import ws
 
 
 
-global _c,_pq,_l_ws,_sc
+global _c,_pq,_sc
 _c={}
 _pq=None
-_l_ws={}
 _sc=None
 _tl=threading.Lock()
 
 
 
 def _print_q():
-	global _pq,_l_ws
+	global _pq
 	lt=time.time()
 	fs=__import__("storage")
 	fs.set_silent("log.log")
@@ -30,13 +28,7 @@ def _print_q():
 			_tl.release()
 			s=datetime.datetime.now().strftime(f"[{sf.filename[:-3]}{('.'+sf.function if sf.function!='<module>' else '')}, %H:%M:%S] {a}")
 			builtins.print(s)
-			s=bytes(s,"utf-8")
-			for k,v in list(_l_ws.items()):
-				if (v[1]==False):
-					_l_ws[k]=(v[0],True)
-					ws.send(b"1"+dt[:-1],thr=v[0])
-				ws.send(b"0"+s,thr=v[0])
-			dt+=s+b"\n"
+			dt+=bytes(s,"utf-8")+b"\n"
 			lc+=1
 			if (lc>1024):
 				dt=dt[dt.index(b"\n")+1:]
@@ -65,25 +57,3 @@ def print(*a):
 		_tl.acquire()
 		_pq+=[(a,inspect.getouterframes(inspect.currentframe(),2)[1])]
 		_tl.release()
-
-
-
-def ws_logs_start():
-	global _sc,_l_ws
-	def _ws_keep_alive(a,t):
-		while (a in _l_ws):
-			ws.send(b"null",thr=t)
-			time.sleep(20)
-	if (_sc==None):
-		_sc=__import__("server")
-	a=_sc.address()
-	_l_ws[a]=(threading.current_thread(),False)
-	thr=threading.Thread(target=_ws_keep_alive,args=(a,_l_ws[a][0]))
-	thr.daemon=True
-	thr.start()
-
-
-
-def ws_logs_end():
-	global _l_ws
-	del _l_ws[_sc.address()]

@@ -18,7 +18,7 @@ def index(url):
 
 
 
-@server.route("GET",None)
+@server.route("*",None)
 def not_found(url):
 	server.set_code(404)
 	server.set_header("Content-Type","text/html")
