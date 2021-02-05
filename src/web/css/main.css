@@ -55,11 +55,74 @@ body {
 	text-align: center;
 	font-size: 30px;
 	border-bottom: solid 5px #0000ff;
+	user-select: none;
 }
 .box .name {
 	position: absolute;
-	top: 55px;
+	top: 75px;
 	left: 50%;
 	transform: translate(-50%,0);
 	height: 40px;
+	line-height: 40px;
+	white-space: nowrap;
+}
+.box .name .name-inp {
+	background: #ff00ff;
+	color: #00ffff;
+}
+.box .level {
+	position: absolute;
+	top: 150px;
+	left: 50%;
+	width: 200px;
+	transform: translate(-50%,0);
+	height: 50px;
+	user-select: none;
+}
+.box .level .l0 {
+	position: absolute;
+	left: -4.5px;
+	top: 0;
+	width: 100px;
+	height: 100%;
+	line-height: 50px;
+	text-align: center;
+	border: solid 3px #80ff80;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background: #ff8080;
+	font-size: 20px;
+	cursor: pointer;
+}
+.box .level .l1 {
+	position: absolute;
+	right: -4.5px;
+	top: 0;
+	width: 100px;
+	height: 100%;
+	line-height: 50px;
+	text-align: center;
+	border: solid 3px #80ff80;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	background: #ff8080;
+	font-size: 20px;
+	cursor: pointer;
+}
+.box .level .s {
+	background: #808080;
+}
+.box .start {
+	position: absolute;
+	top: 225px;
+	left: 50%;
+	width: 100px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 30px;
+	transform: translate(-50%,0);
+	border: solid 3px #8080ff;
+	cursor: pointer;
+	user-select: none;
 }
