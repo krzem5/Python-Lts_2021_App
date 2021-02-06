@@ -138,3 +138,11 @@ def api_create(url):
 	USER_LOGIN_URLS[l_id]=(id_,int(time.time())+EXP_START_TIME)
 	_tl.release()
 	return {"url":f"/start/{l_id}"}
+
+
+
+@server.route("GET",r"/api/storyline")
+def api_storyline(url):
+	server.set_code(200)
+	server.set_header("Content-Type","application/json")
+	return storage.read("storyline.json")
