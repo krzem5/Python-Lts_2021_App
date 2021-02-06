@@ -106,7 +106,7 @@ def read_token():
 		for k in h["cookie"].split(b";"):
 			k=k.split(b"=")
 			if (k[0]==b"__ctoken"):
-				return (str(k[1],"utf-8"),True)
+				return str(k[1],"utf-8")
 	return None
 
 
