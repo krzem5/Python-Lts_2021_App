@@ -108,7 +108,7 @@ def _minify_html(html,fp,fp_b):
 			ss,st,sc,sp,se=km.group(1),km.group(2),km.group(3),km.group(4),km.group(5)
 			if (len(ss)>0 and ss in b"+~"):
 				raise RuntimeError("CSS Selector Symbols '+' and '~' aren't Implemented Yet!")
-			if ((ss==b">" or st==b"*" or (len(st)>0 and st[:1]!=b"#") or (1 if len(st) else 0)+sc.count(b".")>1) and ps==-1):
+			if ((ss==b">" or st==b"*" or (len(st)>0 and st[:1]!=b"#") or (1 if len(st) else 0)+sc.count(b".")>1 or len(se)>0) and ps==-1):
 				ps=len(l)-(0 if (1 if len(st) else 0)+sc.count(b".")>1 else 1)
 			if (b":not" in se):
 				print("      CSS Selector :not(...) has been Ignored!")
