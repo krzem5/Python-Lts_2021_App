@@ -63,7 +63,7 @@ body {
 	left: 0;
 	width: 100%;
 	height: 100px;
-	background: #1e1e1e;
+	background: #1f1f1f;
 	border-bottom: solid 10px #0f0f0f;
 }
 .bg-r .bg .wr .top .icon {
@@ -151,6 +151,11 @@ body {
 	width: 100%;
 	min-height: calc(100% - 120px);
 	padding: 10px;
+	background: url("/rsrc/bg.png");
+	background-repeat: no-repeat;
+	background-position: bottom;
+	background-size: cover;
+	image-rendering: pixelated;
 }
 .bg-r .bg .wr .main .h {
 	position: absolute;
@@ -158,11 +163,12 @@ body {
 	left: 50%;
 	transform: translate(-50%,0);
 	height: 175px;
-	font-family: Turret Road;
+	font-family: Nova Mono;
 	font-weight: 400;
 	text-align: center;
 	line-height: 150px;
-	font-size: 115px;
+	font-size: 40px;
+	font-style: italic;
 	color: #4837db;
 	user-select: none;
 	white-space: nowrap;
