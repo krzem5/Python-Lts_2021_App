@@ -440,7 +440,7 @@ def _minify_html(html,fp,fp_b):
 		icc=0
 		print("    Parsing HTML Strings...")
 		for i,k in enumerate(tl):
-			if (k[0]=="stringS" and JS_STRING_HTML_TAG_REGEX.match(k[1][1:])):
+			if (k[0]=="stringS" and JS_STRING_HTML_TAG_REGEX.search(k[1][1:])):
 				si=i+0
 			if (si!=-1):
 				if (k[0] in ["stringS","stringM","stringE"]):
@@ -460,7 +460,7 @@ def _minify_html(html,fp,fp_b):
 					if (k[0]=="string" and ((sw==1 and tl[i+1][0]=="operator" and tl[i+1][1]==b":") or (sw==2 and tl[i+1][0] in ["stringM","stringE"]))):
 						il+=[(len(bf)+(1 if sw==2 else 0),len(bf)+len(k[1])+(1 if sw==2 else 0)-2,i)]
 						bf+=(b" " if sw==2 else b"")+k[1][1:-1]
-			if (k[0]=="string" and JS_STRING_HTML_TAG_REGEX.match(k[1][1:])):
+			if (k[0]=="string" and JS_STRING_HTML_TAG_REGEX.search(k[1][1:])):
 				il+=[(len(bf),len(bf)+len(k[1])-2,i)]
 				bf+=k[1][1:-1]
 			if ((k[0]=="stringE" and si!=-1) or (k[0]=="string" and si==-1)):
@@ -652,13 +652,12 @@ def _minify_html(html,fp,fp_b):
 				if (len(l)==0):
 					si=i
 				l+=[(v,(True if k=="css_class" else False))]
-			else:
-				if (len(l)>0):
-					h=tuple(l)
-					if (h not in vfms_f):
-						vfms_f[h]=(l,1,[(si,i)])
-					else:
-						vfms_f[h]=(l,vfms_f[h][1]+1,vfms_f[h][2]+[(si,i)])
+			elif (len(l)>0):
+				h=tuple(l)
+				if (h not in vfms_f):
+					vfms_f[h]=(l,1,[(si,i)])
+				else:
+					vfms_f[h]=(l,vfms_f[h][1]+1,vfms_f[h][2]+[(si,i)])
 				l=[]
 		return (tl,cvm,cvma,vfms,vfms_f,sl)
 	def _parse_css(css,tcm):
