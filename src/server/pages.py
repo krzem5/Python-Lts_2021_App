@@ -29,7 +29,7 @@ def index(url):
 @server.route("GET",r"/play/[a-fA-F0-9]{32}")
 def play_token(url):
 	server.set_header("Content-Type","text/html")
-	tk=api.is_valid_login(url[7:])
+	tk=api.is_valid_login(url[6:])
 	if (tk is not None):
 		server.set_code(307)
 		server.set_header("Set-cookie",f"__ctoken={tk};Max-Age={api.TOKEN_EXP_DATE};SameSite=Secure;Secure;HttpOnly;Path=/")
