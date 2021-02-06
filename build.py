@@ -467,7 +467,10 @@ def _minify_html(html,fp,fp_b):
 				si=-1
 				i=0
 				while (i<len(bf)):
-					i+=JS_STRING_HTML_TAG_REGEX.search(bf[i:]).end(0)
+					m=JS_STRING_HTML_TAG_REGEX.search(bf[i:])
+					if (m==None):
+						break
+					i+=m.end(0)
 					e=bf[i:i+1]
 					ek=b""
 					ev=None
@@ -981,7 +984,7 @@ def _minify_html(html,fp,fp_b):
 					sl=[("keyword",b"let")]
 				else:
 					sl+=[("operator",b",")]
-				sl+=[("identifier",mv),("operator",b"="),("string",b"\""+k[1]+b"\"")]
+				sl+=[("identifier",mv),("operator",b"="),("string",b"\""+k[1].replace(b"\"",b"\\\"")+b"\"")]
 		for k,v in sorted(cvms.items(),key=lambda e:-e[0][1]):
 			tl=tl[:k[0]]+[("identifier",v)]+tl[k[1]:]
 		if (len(sl)>0):
