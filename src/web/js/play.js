@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 	let tce=document.querySelector(".txt-c");
 	let tqe=document.querySelector(".txt-q");
 	let ale=document.querySelector(".a-list");
-	let spe=document.querySelector(".space");
+	let spe=document.querySelector(".hint");
 	let storyline;
 	let lvl;
 	let st_k=0;
@@ -31,14 +31,14 @@ document.addEventListener("DOMContentLoaded",()=>{
 				v=1;
 			}
 			st_kb_s=v;
-			spe.classList.add("space-v");
+			spe.classList.add("hint-v");
 		},t);
 	}
 	window._check=(t,c)=>{
 		if (st_kb_s==2){
 			if (c){
 				st_kb_s=0;
-				spe.classList.remove("space-v");
+				spe.classList.remove("hint-v");
 				t.classList.add("a-c");
 				ca=t;
 				ale.childNodes.forEach((e)=>{
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 	function _next(){
 		st_kb_s=0;
 		if (st_s==0){
-			spe.classList.remove("space-v");
+			spe.classList.remove("hint-v");
 			tce.classList.remove("txt-c-s");
 			setTimeout(()=>{
 				spe.innerHTML=`Press <span class="kb">Space</span> to Continue`;
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 			},(st_si?2e3:0));
 		}
 		else if (st_s==1){
-			spe.classList.remove("space-v");
+			spe.classList.remove("hint-v");
 			tce.classList.remove("txt-c-s");
 			setTimeout(()=>{
 				tle.innerHTML=_render_text(lvl[st_k].lesson);
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 			},2e3);
 		}
 		else if (st_s==2){
-			spe.classList.remove("space-v");
+			spe.classList.remove("hint-v");
 			tle.classList.add("txt-l-t");
 			tce.innerHTML=_render_text(lvl[st_k].q_desc);
 			tce.classList.add("txt-c-s");
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 			st_s=3;
 		}
 		else if (st_s==3){
-			spe.classList.remove("space-v");
+			spe.classList.remove("hint-v");
 			tce.classList.add("txt-c-t");
 			tqe.classList.remove("txt-q-s");
 			if (ca){
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 			},(st_si?2e3:0));
 		}
 		else{
-			spe.classList.remove("space-v");
+			spe.classList.remove("hint-v");
 			tce.classList.remove("txt-c-s");
 			tle.classList.remove("txt-l-v");
 			tqe.classList.remove("txt-q-s");

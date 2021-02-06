@@ -131,7 +131,7 @@ def api_create(url):
 	id_=secrets.token_hex(ID_LEN)
 	while (id_=="0"*ID_LEN*2 or id_ in ALL_USERS):
 		id_=secrets.token_hex(ID_LEN)
-	ALL_USERS[id_]={"nm":dt["name"],"lvl":dt["level"]}
+	ALL_USERS[id_]={"nm":dt["name"].title(),"lvl":dt["level"]}
 	l_id=secrets.token_hex(URL_ID_LEN)
 	while (l_id in USER_LOGIN_URLS):
 		l_id=secrets.token_hex(URL_ID_LEN)
