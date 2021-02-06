@@ -69,7 +69,7 @@ body {
 	min-height: 100%;
 	padding: 10px;
 	font-family: Nova Mono;
-	color: #424242;
+	color: #ffffff;
 }
 .bg-r .bg .wr .main .txt-l {
 	position: absolute;
@@ -171,12 +171,12 @@ body {
 	text-align: center;
 	transform: translate(-50%,-50%);
 	text-decoration: line-through rgba(0,0,0,0);
-	color: #303030;
+	color: #ffffff;
 	transition: text-decoration 0.75s, color 0.75s;
 	user-select: none;
 }
 .bg-r .bg .wr .main .a-list .a:hover:not(.a-w):not(.a-c) .a-dt {
-	color: #525252;
+	color: #c1c1c1;
 }
 .bg-r .bg .wr .main .a-list .a.a-w .a-dt {
 	text-decoration: line-through #d93a3a;
