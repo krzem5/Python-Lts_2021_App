@@ -146,9 +146,11 @@ body {
 
 .bg-r .bg .wr .main {
 	position: absolute;
-	top: 120px;
+	top: 0;
 	left: 0;
 	width: 100%;
-	min-height: calc(100% - 120px);
+	min-height: 100%;
 	padding: 10px;
+	font-family: Consolas;
+	color: #ffffff;
 }
