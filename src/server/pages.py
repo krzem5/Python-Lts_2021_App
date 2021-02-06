@@ -43,7 +43,6 @@ def play_token(url):
 
 @server.route("GET",r"/play")
 def play(url):
-	server.set_header("Content-Type","text/html")
 	tk=api.read_token()
 	server.set_header("Content-Type","text/html")
 	if (tk is None or not api.is_valid(tk)):
