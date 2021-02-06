@@ -585,7 +585,16 @@ def _minify_html(html,fp,fp_b):
 			for i,e in enumerate(esl):
 				if (e[0]=="identifier"):
 					if (st==1):
-						print(e[1])
+						v=b""
+						for j,k in enumerate(e[1].split(b".")):
+							if (j==0):
+								v+=(cvm[k] if k in cvm else k)
+							else:
+								if (k in cvma):
+									v+=b"["+cvma[k]+b"]"
+								else:
+									v+=b"."+k
+						esl[i]=("identifier",v)
 					elif (st==2 and e[1] in cvm):
 						esl[i]=("identifier",cvm[e[1]])
 					st=(st+1)%3
