@@ -137,7 +137,7 @@ def api_create(url):
 		l_id=secrets.token_hex(URL_ID_LEN)
 	USER_LOGIN_URLS[l_id]=(id_,int(time.time())+EXP_START_TIME)
 	_tl.release()
-	return {"url":f"/start/{l_id}"}
+	return {"url":f"/play/{l_id}"}
 
 
 
