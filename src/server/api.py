@@ -111,6 +111,14 @@ def read_token():
 
 
 
+def get_user_data(tk):
+	_tl.acquire()
+	o=(ALL_USERS[tk] if tk in ALL_USERS else None)
+	_tl.release()
+	return o
+
+
+
 @server.route("POST",r"/api/create")
 def api_create(url):
 	global ALL_USERS,USER_LOGIN_URLS

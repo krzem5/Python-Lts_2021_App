@@ -10,6 +10,11 @@ import utils
 
 
 
+with open("web/start_template.html","rb") as f:
+	GAME_TEMPLATE=f.read().split(b"$$$__DATA__$$$")
+
+
+
 @server.route("GET",r"/")
 def index(url):
 	server.set_code(200)
@@ -44,7 +49,8 @@ def start(url):
 		server.set_header("Location","https://megimeru.herokuapp.com/")
 		return b""
 	server.set_code(200)
-	return utils.cache("web/start.html")
+	dt=api.get_user_data(tk)
+	return GAME_TEMPLATE[0]+bytes(f"name:\"{dt['nm']}\",level:{dt['lvl']}","utf-8")+GAME_TEMPLATE[1]
 
 
 
