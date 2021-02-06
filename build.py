@@ -4,7 +4,6 @@ import ntpath
 import os
 import re
 import requests
-import shutil
 import subprocess
 import sys
 import time
@@ -1039,12 +1038,22 @@ for k in os.listdir("build"):
 	if (k==".git"):
 		continue
 	if (os.path.isdir(f"build\\{k}")==True):
-		shutil.rmtree(f"build\\{k}")
+		tdl=[f"build\\{k}"]
+		for r,dl,fl in os.walk(f"build\\{k}"):
+			tdl=[os.path.join(r,e) for e in dl]+tdl
+			for f in fl:
+				os.remove(os.path.join(r,f))
+		for k in tdl:
+			if (k not in [f"build\\web",f"build\\web\\rsrc",f"build\\server"]):
+				os.rmdir(k)
 	else:
 		os.remove(f"build\\{k}")
-os.mkdir(f"build\\web")
-os.mkdir(f"build\\web\\rsrc")
-os.mkdir(f"build\\server")
+if (not os.path.exists(f"build\\web")):
+	os.mkdir(f"build\\web")
+if (not os.path.exists(f"build\\web\\rsrc")):
+	os.mkdir(f"build\\web\\rsrc")
+if (not os.path.exists(f"build\\server")):
+	os.mkdir(f"build\\server")
 for fn in os.listdir("src\\web"):
 	if (fn[-5:]==".html"):
 		with open(f"src\\web\\{fn}","rb") as rf,open(f"build\\web\\{fn}","wb") as wf:
