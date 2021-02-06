@@ -26,20 +26,6 @@ _tl=threading.Lock()
 
 
 
-def is_valid(t):
-	global USER_LOGIN_URLS
-	utils.print(t,USER_LOGIN_URLS,time.time())
-	_tl.acquire()
-	if (t in USER_LOGIN_URLS and USER_LOGIN_URLS[t][1]>time.time()):
-		o=USER_LOGIN_URLS[t][0]
-		del USER_LOGIN_URLS[t]
-		_tl.release()
-		return o
-	_tl.release()
-	return None
-
-
-
 
 def _validate(eb,t,body=False):
 	b_dt=None
@@ -89,6 +75,39 @@ def _validate(eb,t,body=False):
 		else:
 			raise RuntimeError(v["p"])
 	return (o,True)
+
+
+
+def is_valid_login(t):
+	global USER_LOGIN_URLS
+	_tl.acquire()
+	if (t in USER_LOGIN_URLS and USER_LOGIN_URLS[t][1]>time.time()):
+		o=USER_LOGIN_URLS[t][0]
+		del USER_LOGIN_URLS[t]
+		_tl.release()
+		return o
+	_tl.release()
+	return None
+
+
+
+def is_valid(t):
+	_tl.acquire()
+	o=(t in ALL_USERS)
+	_tl.release()
+	return o
+
+
+
+def read_token():
+	h=server.headers()
+	tk=None
+	if ("cookie" in h):
+		for k in h["cookie"].split(b";"):
+			k=k.split(b"=")
+			if (k[0]==b"__ctoken"):
+				return (str(k[1],"utf-8"),True)
+	return None
 
 
 

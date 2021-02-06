@@ -20,9 +20,9 @@ def index(url):
 
 
 @server.route("GET",r"/start/[a-fA-F0-9]{32}")
-def start(url):
+def start_token(url):
 	server.set_header("Content-Type","text/html")
-	tk=api.is_valid(url[7:])
+	tk=api.is_valid_login(url[7:])
 	if (tk is not None):
 		server.set_code(307)
 		server.set_header("Set-cookie",f"__ctoken={tk};Max-Age={api.TOKEN_EXP_DATE};SameSite=Secure;Secure;HttpOnly;Path=/")
@@ -31,6 +31,20 @@ def start(url):
 	server.set_code(404)
 	server.set_header("Content-Type","text/html")
 	return utils.cache("web/not_found.html")
+
+
+
+@server.route("GET",r"/start")
+def start(url):
+	server.set_header("Content-Type","text/html")
+	tk=api.read_token()
+	server.set_header("Content-Type","text/html")
+	if (tk is None or not api.is_valid(tk)):
+		server.set_code(307)
+		server.set_header("Location","https://megimeru.herokuapp.com/")
+		return b""
+	server.set_code(200)
+	return utils.cache("web/start.html")
 
 
 
