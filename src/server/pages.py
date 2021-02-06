@@ -57,7 +57,7 @@ def play(url):
 
 @server.route("GET",r"/rsrc/.*")
 def rsrc(url):
-	server.set_header("Content-Type","image/png")
+	server.set_header("Content-Type",("image/png" if url[-4:]==".png" else "image/gif"))
 	if (os.path.exists(BASE_PATH+url)):
 		server.set_code(200)
 		return utils.cache(BASE_PATH+url)

@@ -174,12 +174,15 @@ body {
 	transition: text-decoration 0.75s, color 0.75s;
 	user-select: none;
 }
-.bg-r .bg .wr .main .a-list .a:hover:not(.a-w):not(.a-c) .a-dt {
+.bg-r .bg .wr .main .a-list .a:hover .a-dt {
 	color: #d9d9d9;
+}
+.bg-r .bg .wr .main .a-list .a.a-c .a-dt {
+	color: #ffffff !important;
 }
 .bg-r .bg .wr .main .a-list .a.a-w .a-dt {
 	text-decoration: line-through #d93a3a;
-	color: #060606;
+	color: #060606 !important;
 }
 .bg-r .bg .wr .main .txt-nm {
 	color: #4078e4;
@@ -211,6 +214,13 @@ body {
 .bg-r .bg .wr .main .hint.hint-v {
 	transition: opacity 2s ease-in-out;
 	opacity: 1;
+}
+
+
+
+.coin {
+	position: absolute;
+	transform: translate(-50%,-50%);
 }
 
 

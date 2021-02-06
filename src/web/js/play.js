@@ -33,6 +33,17 @@ document.addEventListener("DOMContentLoaded",()=>{
 			spe.classList.add("hint-v");
 		},t);
 	}
+	function _coin(e){
+		e._dy+=0.2;
+		e._x+=e._dx;
+		e._y+=e._dy;
+		e.style.top=`${e._y}px`;
+		e.style.left=`${e._x}px`;
+		if (e._y>window.innerHeight+30){
+			clearInterval(e._in);
+			document.body.removeChild(e);
+		}
+	}
 	window._check=(t,c)=>{
 		if (st_kb_s==2){
 			if (c){
@@ -45,6 +56,17 @@ document.addEventListener("DOMContentLoaded",()=>{
 						e.classList.remove("a-s");
 					}
 				});
+				for (let i=0;i<10;i++){
+					let e=document.createElement("img");
+					e.classList.add("coin");
+					e.src="/rsrc/coin.gif";
+					document.body.appendChild(e);
+					e._x=window.innerWidth/2;
+					e._y=-30;
+					e._dx=Math.random()*4-2;
+					e._dy=-0.6;
+					e._in=setInterval(_coin,16,e);
+				}
 				_show_hint(3e3,3);
 			}
 			else{

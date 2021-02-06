@@ -148,11 +148,13 @@ def _minify_html(html,fp,fp_b):
 			while (i<len(s)):
 				e=False
 				for k,v in JS_REGEX_LIST.items():
-					if (n==True and k=="regex"):
+					if (k=="regex" and n==True):
 						continue
 					mo=re.match(v,s[i:])
 					if (mo!=None):
 						m=mo.group(0)
+						if (k=="regex" and b"\n" in m):
+							continue
 						if (k=="line_break"):
 							o+=[("operator",b";")]
 						elif (k=="string" and m[:1]==b"`"):
