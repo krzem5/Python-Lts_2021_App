@@ -885,7 +885,7 @@ def _minify_html(html,fp,fp_b):
 				cs=b""
 				for ce in c:
 					cs+=ce[0]+(b"#"+ce[1][b"id"] if b"id" in ce[1] else b"")+(b"."+ce[1][b"class"].replace(b" ",b".") if b"class" in ce[1] else b"")+b"$"
-				cs+=t_nm+(b"#"+pm[b"id"] if b"id" in pm else b"")+(b"."+pm[b"class"].replace(b" ",b".") if b"class" in pm else b"")
+				cs+=t_nm
 				for tc in pm[b"class"].split(b" "):
 					if (tc not in tcm):
 						tcm[tc]=1
@@ -1030,6 +1030,7 @@ for k in os.listdir("build"):
 	else:
 		os.remove(f"build\\{k}")
 os.mkdir(f"build\\web")
+os.mkdir(f"build\\web\\rsrc")
 os.mkdir(f"build\\server")
 for fn in os.listdir("src\\web"):
 	if (fn[-5:]==".html"):
@@ -1038,6 +1039,12 @@ for fn in os.listdir("src\\web"):
 for fn in os.listdir("src\\server"):
 	if (os.path.isfile(f"src\\server\\{fn}")==True):
 		with open(f"src\\server\\{fn}","rb") as rf,open(f"build\\server\\{fn}","wb") as wf:
+			wf.write(rf.read())
+for r,dl,fl in os.walk("src\\web\\rsrc"):
+	for d in dl:
+		os.mkdir(os.path.join("build"+r[3:],d))
+	for f in fl:
+		with open(os.path.join(r,f),"rb") as rf,open(os.path.join("build"+r[3:],f),"wb") as wf:
 			wf.write(rf.read())
 if (ge==True):
 	with open(f"build\\runtime.txt","w") as f:

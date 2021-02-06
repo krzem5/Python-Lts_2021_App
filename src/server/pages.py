@@ -7,10 +7,12 @@ import server
 import storage
 import time
 import utils
+import os
 
 
 
-with open("web/start_template.html","rb") as f:
+BASE_PATH="web/"
+with open("web/play_template.html","rb") as f:
 	GAME_TEMPLATE=f.read().split(b"\"$$$__DATA__$$$\"")
 
 
@@ -51,6 +53,18 @@ def start(url):
 	server.set_code(200)
 	dt=api.get_user_data(tk)
 	return GAME_TEMPLATE[0]+bytes(f"{{name:\"{dt['nm']}\",level:{dt['lvl']}}}","utf-8")+GAME_TEMPLATE[1]
+
+
+
+@server.route("GET",r"/rsrc/.*")
+def rsrc(url):
+	server.set_header("Content-Type","image/jpeg")
+	if (os.path.exists(BASE_PATH+url)):
+		server.set_code(200)
+		return utils.cache(BASE_PATH+url)
+	server.set_code(404)
+	server.set_header("Content-Type","text/plain")
+	return b"Not Found"
 
 
 
