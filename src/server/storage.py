@@ -10,7 +10,7 @@ import utils
 
 
 global _bc,_fs,_fs_d,_fs_s,_fs_u
-REPO_NAME="_app_data"
+REPO_NAME="_app_data2"
 with open("server/token.dt","r") as f:
 	GITHUB_TOKEN=f.read().strip()
 GITHUB_HEADERS="application/vnd.github.v3+json,application/vnd.github.mercy-preview+json"
