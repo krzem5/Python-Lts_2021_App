@@ -151,6 +151,124 @@ body {
 	width: 100%;
 	min-height: 100%;
 	padding: 10px;
-	font-family: Consolas;
+	font-family: Nova Mono;
 	color: #ffffff;
+}
+.bg-r .bg .wr .main .txt-l {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	text-align: center;
+	transform: translate(-50%,-50%);
+	width: calc(100% - 100px);
+	font-size: 25px;
+	opacity: 0;
+	user-select: none;
+}
+.bg-r .bg .wr .main .txt-l.txt-l-v {
+	transition: opacity 3s ease-in-out;
+	opacity: 1;
+}
+.bg-r .bg .wr .main .txt-l.txt-l-t {
+	animation: to_top 0.75s forwards ease-in-out;
+}
+.bg-r .bg .wr .main .txt-c {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	text-align: center;
+	transform: translate(-50%,-50%);
+	width: calc(100% - 100px);
+	font-size: 25px;
+	transition: opacity 1.5s ease-in-out;
+	opacity: 0;
+	user-select: none;
+}
+.bg-r .bg .wr .main .txt-c.txt-c-s {
+	transition: opacity 3s ease-in-out;
+	opacity: 1;
+}
+.bg-r .bg .wr .main .txt-c.txt-c-t {
+	animation: to_top_q 0.75s forwards ease-in-out;
+}
+.bg-r .bg .wr .main .txt-q {
+	position: absolute;
+	top: 400px;
+	left: 50%;
+	text-align: center;
+	transform: translate(-50%,-50%);
+	width: calc(100% - 100px);
+	font-size: 27.5px;
+	transition: opacity 1.5s ease-in-out;
+	opacity: 0;
+	user-select: none;
+	font-weight: bold;
+	font-style: italic;
+	color: #d73e27;
+}
+.bg-r .bg .wr .main .txt-q.txt-q-s {
+	transition: opacity 3s ease-in-out;
+	opacity: 1;
+}
+.bg-r .bg .wr .main .txt-nm {
+	color: #78d925;
+	font-weight: bold;
+}
+.bg-r .bg .wr .main .txt-h-letter {
+	color: #e08d1e;
+	display: table-cell;
+	font-style: italic;
+	transform: translate(0,3px);
+	animation: jump 0.75s infinite alternate ease-in-out;
+}
+
+
+
+.bg-r .bg .wr .main .space {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translate(-50%,0);
+	color: #505050;
+	transition: opacity 1.5s ease-in-out;
+	opacity: 0;
+	font-size: 20px;
+	user-select: none;
+}
+.bg-r .bg .wr .main .space .kb {
+	font-family: Ubuntu Mono;
+	font-size: 25px;
+}
+.bg-r .bg .wr .main .space.space-v {
+	transition: opacity 2s ease-in-out;
+	opacity: 1;
+}
+
+
+
+@keyframes jump {
+	0% {
+		transform: translate(0,3px);
+	}
+	100% {
+		transform: translate(0,-3px);
+	}
+}
+@keyframes to_top {
+	0% {
+		top: 50%;
+		font-size: 25px;
+	}
+	100% {
+		top: 50px;
+		font-size: 20px;
+	}
+}
+@keyframes to_top_q {
+	0% {
+		top: 50%;
+	}
+	100% {
+		top: 200px;
+	}
 }

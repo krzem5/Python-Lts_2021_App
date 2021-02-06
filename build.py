@@ -142,13 +142,15 @@ def _minify_html(html,fp,fp_b):
 					o+=[("operator",b"...")]
 				o+=[("identifier",k[0])]
 			return o
-		def _tokenize(s):
+		def _tokenize(s,n=False):
 			i=0
 			o=[]
 			b=0
 			while (i<len(s)):
 				e=False
 				for k,v in JS_REGEX_LIST.items():
+					if (n==True and k=="regex"):
+						continue
 					mo=re.match(v,s[i:])
 					if (mo!=None):
 						m=mo.group(0)
@@ -160,7 +162,7 @@ def _minify_html(html,fp,fp_b):
 							f=False
 							while (j<len(m)):
 								if (m[j:j+2]==b"${"):
-									l,tj=_tokenize(m[j+2:])
+									l,tj=_tokenize(m[j+2:],True)
 									j+=tj+2
 									o+=[("string"+("M" if f==True else "S"),(b"`"+ts[1:] if f==False else b"}"+ts)+b"${")]+l
 									ts=b""
@@ -512,7 +514,7 @@ def _minify_html(html,fp,fp_b):
 												cl.insert(0,(1,ev[:m.end(0)],sk[2],i-len(ev)-sk[0]))
 												icc+=1
 												break
-								elif (b" " not in ev and len(ev)>0):
+								elif (b" " not in ev and b":" not in ev and len(ev)>0):
 									for sk in il:
 										if (sk[0]<=i-len(ev) and i-len(ev)<sk[1]):
 												cl.insert(0,(2,ev,sk[2],i-sk[0]-len(ev)-1))
