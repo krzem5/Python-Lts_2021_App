@@ -114,7 +114,7 @@ def read_token():
 @server.route("POST",r"/api/create")
 def api_create(url):
 	global ALL_USERS,USER_LOGIN_URLS
-	dt,ok=_validate("create",{"name":{"t":str,"p":"body"},"level":{"t":int,"p":"body","range":[0,1]}},body=True)
+	dt,ok=_validate("create",{"name":{"t":str,"p":"body"},"level":{"t":int,"p":"body","range":[0,2]}},body=True)
 	if (ok==False):
 		return dt
 	server.set_code(200)

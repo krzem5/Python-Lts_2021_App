@@ -72,32 +72,12 @@ body {
 	height: 50px;
 	user-select: none;
 }
-.box .level .l0 {
-	position: absolute;
-	left: -4.5px;
-	top: 0;
+.box .level .l0, .box .level .l1, .box .level .l2 {
 	width: 100px;
 	height: 100%;
 	line-height: 50px;
 	text-align: center;
 	border: solid 3px #80ff80;
-	border-top-left-radius: 10px;
-	border-bottom-left-radius: 10px;
-	background: #ff8080;
-	font-size: 20px;
-	cursor: pointer;
-}
-.box .level .l1 {
-	position: absolute;
-	right: -4.5px;
-	top: 0;
-	width: 100px;
-	height: 100%;
-	line-height: 50px;
-	text-align: center;
-	border: solid 3px #80ff80;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
 	background: #ff8080;
 	font-size: 20px;
 	cursor: pointer;
@@ -107,7 +87,7 @@ body {
 }
 .box .start {
 	position: absolute;
-	top: 225px;
+	top: 400px;
 	left: 50%;
 	width: 100px;
 	height: 40px;
