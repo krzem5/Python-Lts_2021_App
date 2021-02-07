@@ -1,11 +1,9 @@
 import hashlib
-import json
 import ntpath
 import os
 import re
 import requests
 import subprocess
-import sys
 import time
 
 
@@ -40,7 +38,7 @@ JS_CONST_LETTERS="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 JS_DOCUMENT_CACHE_PROPERTIES=["adoptNode","captureEvents","caretRangeFromPoint","createAttribute","createAttributeNS","createCDATASection","createComment","createDocumentFragment","createElement","createElementNS","createEvent","createNodeIterator","createProcessingInstruction","createRange","createTextNode","createTouch","createTouchList","createTreeWalker","exitPictureInPicture","exitPointerLock","getElementsByClassName","getElementsByTagName","getElementsByTagNameNS","hasStorageAccess","importNode","releaseCapture","releaseEvents","requestStorageAccess","mozSetImageElement","getElementById","querySelector","querySelectorAll","createExpression","createNSResolver","evaluate","clear","close","getElementsByName","hasFocus","open","write","writeln","caretPositionFromPoint","elementFromPoint","elementsFromPoint","getAnimations","getSelection"]
 JS_KEYWORDS=["break","case","catch","const","const","continue","debugger","default","delete","do","else","enum","false","finally","for","function","if","in","instanceof","let","new","null","of","return","switch","this","throw","true","try","typeof","var","var","void","while","with"]
 JS_OPERATORS=["()=>","_=>","=>","...",">>>=",">>=","<<=","|=","^=","&=","+=","-=","*=","/=","%=",";",",","?",":","||","&&","|","^","&","===","==","=","!==","!=","<<","<=","<",">>>",">>",">=",">","++","--","+","-","*","/","%","!","~",".","[","]","{","}","(",")"]
-JS_REGEX_LIST={"dict":re.compile(br"""{\s*(?:[$a-zA-Z0-9_]+|'(?:[^'\\]|\\.)*'|^"(?:[^"\\]|\\.)*"|^`(?:[^`\\]|\\.)*`)\s*:\s*"""),"dict_elem":re.compile(br""",\s*(?:[$a-zA-Z0-9_]+|'(?:[^'\\]|\\.)*'|^"(?:[^"\\]|\\.)*"|^`(?:[^`\\]|\\.)*`)\s*:\s*"""),"float":re.compile(br"\d+\.\d*(?:[eE][-+]?\d+)?|^\d+(?:\.\d*)?[eE][-+]?\d+|^\.\d+(?:[eE][-+]?\d+)?"),"int":re.compile(br"0[xX][\da-fA-F]+|0[0-7]*|\d+"),"identifier":re.compile(br"\.?[$_a-zA-Z0-9_]+(?:\.[$_a-zA-Z0-9_]+)*"),"string":re.compile(br"""'(?:[^'\\]|\\.)*'|^"(?:[^"\\]|\\.)*"|^`(?:[^`\\]|\\.)*`"""),"regex":re.compile(br"\/(?:\\.|\[(?:\\.|[^\]])*\]|[^\/])+\/[gimy]*"),"line_break":re.compile(br"[\n\r]+|/\*(?:.|[\r\n])*?\*/"),"whitespace":re.compile(br"[\ \t]+|//.*?(?:[\r\n]|$)"),"operator":re.compile(bytes("|".join([re.sub(r"([\?\|\^\&\(\)\{\}\[\]\+\-\*\/\.])",r"\\\1",e) for e in JS_OPERATORS]),"utf-8"))}
+JS_REGEX_LIST={"dict":re.compile(br"""{\s*(?:[$a-zA-Z0-9_]+|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)\s*:\s*"""),"dict_elem":re.compile(br""",\s*(?:[$a-zA-Z0-9_]+|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)\s*:\s*"""),"float":re.compile(br"^\d+\.\d*(?:[eE][-+]?\d+)?|^\d+(?:\.\d*)?[eE][-+]?\d+|^\.\d+(?:[eE][-+]?\d+)?"),"int":re.compile(br"0[xX][\da-fA-F]+|0[0-7]*|\d+"),"identifier":re.compile(br"\.?[$a-zA-Z0-9_]+(?:\.[$a-zA-Z0-9_]+)*"),"string":re.compile(br"""'(?:[^'\\]|\\.)*'|^"(?:[^"\\]|\\.)*"|^`(?:[^`\\]|\\.)*`"""),"regex":re.compile(br"\/(?:\\.|\[(?:\\.|[^\]])*\]|[^\/])+\/[gimy]*"),"line_break":re.compile(br"[\n\r]+|/\*(?:.|[\r\n])*?\*/"),"whitespace":re.compile(br"[\ \t]+|//.*?(?:[\r\n]|$)"),"operator":re.compile(bytes("|".join([re.sub(r"([\?\|\^\&\(\)\{\}\[\]\+\-\*\/\.])",r"\\\1",e) for e in JS_OPERATORS]),"utf-8"))}
 JS_RESERVED_IDENTIFIERS=JS_KEYWORDS+["AggregateError","alert","arguments","Array","ArrayBuffer","AsyncFunction","AsyncGenerator","AsyncGeneratorFunction","atob","Atomics","BigInt","BigInt64Array","BigUint64Array","blur","Boolean","btoa","caches","cancelAnimationFrame","cancelIdleCallback","captureEvents","chrome","clearInterval","clearTimeout","clientInformation","close","closed","confirm","console","cookieStore","createImageBitmap","crossOriginIsolated","crypto","customElements","DataView","Date","decodeURI","decodeURIComponent","defaultStatus","defaultstatus","devicePixelRatio","document","encodeURI","encodeURIComponent","Error","escape","eval","EvalError","external","fetch","find","Float32Array","Float64Array","focus","frameElement","frames","Function","Generator","GeneratorFunction","getComputedStyle","getSelection","globalThis","history","Image","indexedDB","Infinity","innerHeight","innerWidth","Int16Array","Int32Array","Int8Array","InternalError","Intl","isFinite","isNaN","isSecureContext","JSON","length","localStorage","location","locationbar","Map","matchMedia","Math","menubar","moveBy","moveTo","NaN","navigator","Number","Object","open","openDatabase","opener","origin","originIsolated","outerHeight","outerWidth","pageXOffset","pageYOffset","parent","parseFloat","parseInt","performance","personalbar","postMessage","print","Promise","prompt","Proxy","queueMicrotask","RangeError","ReferenceError","Reflect","RegExp","releaseEvents","requestAnimationFrame","requestIdleCallback","resizeBy","resizeTo","screen","screenLeft","screenTop","screenX","screenY","scroll","scrollbars","scrollBy","scrollTo","scrollX","scrollY","self","sessionStorage","Set","setInterval","setTimeout","SharedArrayBuffer","showDirectoryPicker","showOpenFilePicker","showSaveFilePicker","speechSynthesis","status","statusbar","stop","String","styleMedia","Symbol","SyntaxError","toolbar","top","trustedTypes","TypeError","Uint16Array","Uint32Array","Uint8Array","Uint8ClampedArray","undefined","unescape","uneval","URIError","visualViewport","WeakMap","WeakSet","WebAssembly","webkitCancelAnimationFrame","webkitRequestAnimationFrame","webkitRequestFileSystem","webkitResolveLocalFileSystemURL","WebSocket","window"]
 JS_STRING_HTML_TAG_REGEX=re.compile(br"<(/?(?:"+bytes(r"|".join(sorted(HTML_TAGS,key=lambda e:-len(e))),"utf-8")+b"))")
 JS_VAR_LETTERS="abcdefghijklmnopqrstuvwxyz"
@@ -196,7 +194,6 @@ def _minify_html(html,fp,fp_b):
 					continue
 				raise RuntimeError(f"Unable to Match JS Regex: {str(s[i:],'utf-8')}")
 			return (o,i)
-		ofl=len(js)
 		print("    Tokenizing...")
 		tl,_=_tokenize(js)
 		i=0
@@ -297,7 +294,6 @@ def _minify_html(html,fp,fp_b):
 					efbl[bl]+=[len(ef)-1]
 			elif (tl[i][0]=="operator"):
 				s_ee=True
-				ot=tl[i][1]
 				if (tl[i][1]==b"{"):
 					vm+=[{}]
 					dl+=[False]
@@ -483,7 +479,6 @@ def _minify_html(html,fp,fp_b):
 						if (e in b" \t\r\n\f\v" and (ev==None or ev[0]==b"\"")):
 							if (ev!=None):
 								raise RuntimeError("Not-Quoted JS String HTML not Supported!")
-							pass
 						elif (e==b"="):
 							if (ev!=None and ev[:1]!=b"\""):
 								raise RuntimeError("Multiple '=' Signs in String HTML in JS")
@@ -548,8 +543,6 @@ def _minify_html(html,fp,fp_b):
 		for k,v in vfm.items():
 			if (v>1):
 				cvml+=[(len(k)*v,k,v,False)]
-				if (b"." in k):
-					dpc=True
 		print(f"    Finding Attribute Substitutions ({len(vfma.keys())} attribute{('s' if len(vfma.keys())!=1 else '')})...")
 		for k,v in vfma.items():
 			if (v>1 and len(k)>2):
@@ -912,9 +905,10 @@ def _minify_html(html,fp,fp_b):
 						else:
 							vfm[sm[0]]+=1
 						for sme in sm[1:]:
-							vfma[sme]=1
-						else:
-							vfma[sme]+=1
+							if (sme not in vfma):
+								vfma[sme]=1
+							else:
+								vfma[sme]+=1
 				pm[k]=v
 		v=None
 		if (t_nm==b"script" and b"type" in pm and pm[b"type"]==b"text/javascript" and b"src" in pm and b"async" not in pm and b"defer" not in pm):
@@ -1093,9 +1087,9 @@ for k in os.listdir("build"):
 			tdl=[os.path.join(r,e) for e in dl]+tdl
 			for f in fl:
 				os.remove(os.path.join(r,f))
-		for k in tdl:
-			if (k not in [f"build\\web",f"build\\web\\rsrc",f"build\\server"]):
-				os.rmdir(k)
+		for e in tdl:
+			if (e not in [f"build\\web",f"build\\web\\rsrc",f"build\\server"]):
+				os.rmdir(e)
 	else:
 		os.remove(f"build\\{k}")
 if (not os.path.exists(f"build\\web")):
