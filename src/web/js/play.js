@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 		}
 		spe._tm=setTimeout(()=>{
 			if (v==3){
-				spe.innerHTML=`Press <span class="kb">Space</span> to Continue`;
+				spe.innerHTML=`<span class="kb">Click</span> on the Screen to Continue`;
 				v=1;
 			}
 			st_kb_s=v;
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 	}
 	window._check=(t,c)=>{
 		if (st_kb_s==2&&!t._c){
-			qa++;
+			qa--;
 			if (c){
 				fetch("/api/answer",{method:"PUT",body:JSON.stringify({a:qa})});
 				st_kb_s=0;
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 			spe.classList.remove("hint-v");
 			tce.classList.remove("txt-c-s");
 			setTimeout(()=>{
-				spe.innerHTML=`Press <span class="kb">Space</span> to Continue`;
+				spe.innerHTML=`<span class="kb">Click</span> on the Screen to Continue`;
 				tce.innerHTML=_render_text(lvl[st_k].desc[st_si]);
 				tce.classList.add("txt-c-s");
 				_show_hint(3e3,1);
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 					st_si=0;
 					st_s=4;
 				}
-			},(st_si?2e3:0));
+			},2e3);
 		}
 		else{
 			spe.classList.remove("hint-v");
@@ -173,11 +173,12 @@ document.addEventListener("DOMContentLoaded",()=>{
 		wre.style.height=`${h}px`;
 	};
 	window.onresize();
-	document.body.onkeyup=(e)=>{
-		if (st_kb_s==1&&e.key==" "){
+	document.body.ontouchup=()=>{
+		if (st_kb_s==1){
 			_next();
 		}
 	}
+	document.body.onmouseup=document.body.ontouchup;
 	fetch("/api/storyline").then((e)=>e.json()).then((e)=>{
 		lvl=e[dt.level];
 		_next();

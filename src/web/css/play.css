@@ -157,15 +157,29 @@ body {
 }
 .bg-r .bg .wr .main .a-list .a:first-child {
 	top: 0;
-	left: 25%;
+	left: 50%;
 }
 .bg-r .bg .wr .main .a-list .a:nth-child(2) {
-	top: 0;
-	left: 75%;
-}
-.bg-r .bg .wr .main .a-list .a:nth-child(3) {
 	top: 130px;
 	left: 50%;
+}
+.bg-r .bg .wr .main .a-list .a:nth-child(3) {
+	top: 260px;
+	left: 50%;
+}
+@media (min-width: 1200px){
+	.bg-r .bg .wr .main .a-list .a:first-child {
+		top: 0;
+		left: 25%;
+	}
+	.bg-r .bg .wr .main .a-list .a:nth-child(2) {
+		top: 0;
+		left: 75%;
+	}
+	.bg-r .bg .wr .main .a-list .a:nth-child(3) {
+		top: 130px;
+		left: 50%;
+	}
 }
 .bg-r .bg .wr .main .a-list .a .a-dt {
 	position: absolute;

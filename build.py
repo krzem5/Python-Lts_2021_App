@@ -671,6 +671,7 @@ def _minify_html(html,fp,fp_b):
 		pc=0
 		ec=0
 		tl=[]
+		ml=[]
 		print("    Parsing Styles...")
 		while (i<len(css)):
 			m=re.match(CSS_SELECTOR_VALUE_REGEX,css[i:])
@@ -708,6 +709,14 @@ def _minify_html(html,fp,fp_b):
 					if (len(t)>0):
 						kfdl+=[(s[1],b"{"+b"".join([k+b"{"+b";".join([e+b":"+re.sub(CSS_SELECTOR_COMMA_REGEX,b",",v[i][e]) for e in sorted(l[i])])+b"}" for i,k in enumerate(t)])+b"}")]
 						ec+=1
+				elif (CSS_WHITESPACE_SPLIT_REGEX.split(s[0])[0]==b"@media"):
+					mr=_parse_css(css[si:i],tcm)
+					sc+=mr[5]
+					pc+=mr[6]
+					ec+=mr[7]
+					gc+=mr[8]
+					ml+=[(s,mr[1:5])]
+					ec+=1
 				elif (len(s)==1 and s[0]==b"@font-face"):
 					v={}
 					l=[]
@@ -783,7 +792,7 @@ def _minify_html(html,fp,fp_b):
 				vml.remove(fsh)
 				vml.append(fsh)
 				vm[fsh][1].extend(ns)
-		return (sl,vm,vml,eo,sc,pc,ec,gc)
+		return (sl,vm,vml,ml,eo,sc,pc,ec,gc)
 	def _write_css_selector(k,tcm):
 		o=b""
 		for ss,st,sc,sp,se in k:
@@ -833,6 +842,13 @@ def _minify_html(html,fp,fp_b):
 					o+=b" "
 			i+=1
 		return (o,i)
+	def _write_css(vm,vml,ml,eo):
+		o=b""
+		for k in vml:
+			o+=b",".join([_write_css_selector(sk,ntcm) for sk in vm[k][1]])+b"{"+vm[k][0]+b"}"
+		for k,v in ml:
+			o+=b",".join(k)+b"{"+_write_css(*v)+b"}"
+		return o+eo
 	def _write_html(e,tcm,js_om):
 		o=b"<"+e[0]
 		for k,v in e[1].items():
@@ -992,7 +1008,7 @@ def _minify_html(html,fp,fp_b):
 		print(f"  Parsing CSS ({css_t[0][1]} script{('s' if css_t[0][1]!=1 else '')}, {len(css_t[0][0])} byte{('s' if len(css_t[0][0])!=1 else '')})...")
 		l+=len(css_t[0][0])
 		css_t[0]=_parse_css(css_t[0][0],tcm)
-		for k in css_t[0][7]:
+		for k in css_t[0][8]:
 			if (k in stcm):
 				del stcm[k]
 	print(f"  Generating Class Names ({len(tcm.keys())} item{('s' if len(tcm.keys())!=1 else '')})...")
@@ -1044,12 +1060,9 @@ def _minify_html(html,fp,fp_b):
 		js_s=f"{ssl} -> {len(js_t[0][1])} (-{round(10000-10000*len(js_t[0][1])/ssl)/100}%)"
 	css_s="none"
 	if (css_t!=None):
-		sl,vm,vml,eo,sc,pc,ec,_=css_t[0]
+		sl,vm,vml,ml,eo,sc,pc,ec,_=css_t[0]
 		print(f"  Regenerating CSS ({len(vml)} style{('s' if len(vml)!=1 else '')}, {sc} selector{('s' if sc!=1 else '')}, {pc} propert{('ies' if pc!=1 else 'y')}, {ec} @-rule{('s' if ec!=1 else '')})...")
-		css_o=b""
-		for k in vml:
-			css_o+=b",".join([_write_css_selector(sk,ntcm) for sk in vm[k][1]])+b"{"+vm[k][0]+b"}"
-		css_o+=eo
+		css_o=_write_css(vm,vml,ml,eo)
 		css_t[0]=("__text__",css_o)
 		css_s=f"{sl} -> {len(css_o)} (-{round(10000-10000*len(css_o)/sl)/100}%)"
 	print(f"  Writing HTML ({ttc} tag{('s' if ttc!=1 else '')})...")
