@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded",()=>{
 	let st_kb_s=0;
 	let st_si=0;
 	let ca;
+	let dt="$$$__DATA__$$$";
 	function _render_text(txt){
-		return txt.replace(/__NAME__/gm,`<span class="txt-nm">`+window._dt.name+"</span>").replace(/\*\*((?:[^\*]|\*[^\*])*)\*\*/gm,(_,b)=>{
+		return txt.replace(/__NAME__/gm,`<span class="txt-nm">`+dt.name+"</span>").replace(/\*\*((?:[^\*]|\*[^\*])*)\*\*/gm,(_,b)=>{
 			return `<span class="txt-h">`+b.split("").map((e,i)=>{
 				return `<span class="txt-h-letter" style="animation-delay:${i/10}s">${(e==" "?"&nbsp;":e)}</span>`;
 			}).join("")+"</span>";
@@ -169,7 +170,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 		}
 	}
 	fetch("/api/storyline").then((e)=>e.json()).then((e)=>{
-		lvl=e[window._dt.level];
+		lvl=e[dt.level];
 		_next();
 	});
 },false);

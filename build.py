@@ -755,7 +755,7 @@ def _minify_html(html,fp,fp_b):
 									kfl[nm]=1
 			i+=1
 		nkfl={}
-		kfl=[(k,v) for k,v in sorted(kfl.items(),key=lambda e:e[1])]
+		kfl=[(k,v) for k,v in sorted(kfl.items(),key=lambda e:e[1]*len(e[0]))]
 		for k,v in kfl:
 			if (v==0):
 				raise RuntimeError(f"@keyframes '{str(k,'utf-8')}' not Used!")
