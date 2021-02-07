@@ -1,9 +1,10 @@
 import json
+import secrets
 import server
 import storage
-import time
 import threading
-import secrets
+import time
+import utils
 
 
 
@@ -125,7 +126,7 @@ def api_create(url):
 	id_=secrets.token_hex(ID_LEN)
 	while (id_=="0"*ID_LEN*2 or id_ in ALL_USERS):
 		id_=secrets.token_hex(ID_LEN)
-	ALL_USERS[id_]={"nm":dt["name"].title(),"lvl":dt["level"]}
+	ALL_USERS[id_]={"nm":dt["name"].title(),"lvl":dt["level"],"a":0}
 	l_id=secrets.token_hex(URL_ID_LEN)
 	while (l_id in USER_LOGIN_URLS):
 		l_id=secrets.token_hex(URL_ID_LEN)
@@ -140,3 +141,22 @@ def api_storyline(url):
 	server.set_code(200)
 	server.set_header("Content-Type","application/json")
 	return storage.read("storyline.json")
+
+
+
+@server.route("PUT",r"/api/answer")
+def api_answer(url):
+	global ALL_USERS
+	dt,ok=_validate("answer",{"a":{"t":int,"p":"body"}},body=True)
+	if (ok==False):
+		return dt
+	server.set_code(200)
+	server.set_header("Content-Type","text/plain")
+	tk=read_token()
+	if (tk is None or not is_valid(tk)):
+		return b""
+	_tl.acquire()
+	ALL_USERS[tk]["a"]+=max(dt["a"],0)
+	_tl.release()
+	utils.print(str(ALL_USERS))
+	return b""

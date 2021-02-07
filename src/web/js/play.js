@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 	let st_si=0;
 	let ca;
 	let dt="$$$__DATA__$$$";
+	let qa;
 	function _render_text(txt){
 		return txt.replace(/__NAME__/gm,`<span class="txt-nm">`+dt.name+"</span>").replace(/\*\*((?:[^\*]|\*[^\*])*)\*\*/gm,(_,b)=>{
 			return `<span class="txt-h">`+b.split("").map((e,i)=>{
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 		},t);
 	}
 	function _coin(e){
-		e._dy+=0.2;
+		e._dy+=10*(1/60);
 		e._x+=e._dx;
 		e._y+=e._dy;
 		e.style.top=`${e._y}px`;
@@ -46,8 +47,10 @@ document.addEventListener("DOMContentLoaded",()=>{
 		}
 	}
 	window._check=(t,c)=>{
-		if (st_kb_s==2){
+		if (st_kb_s==2&&!t._c){
+			qa++;
 			if (c){
+				fetch("/api/answer",{method:"PUT",body:JSON.stringify({a:qa})});
 				st_kb_s=0;
 				spe.classList.remove("hint-v");
 				t.classList.add("a-c");
@@ -57,21 +60,25 @@ document.addEventListener("DOMContentLoaded",()=>{
 						e.classList.remove("a-s");
 					}
 				});
+				let r=t.getBoundingClientRect();
 				for (let i=0;i<10;i++){
 					let e=document.createElement("img");
 					e.classList.add("coin");
-					e.src="/rsrc/coin.gif";
-					document.body.appendChild(e);
-					e._x=window.innerWidth/2;
-					e._y=-30;
+					setTimeout(()=>{
+						e.src="/rsrc/coin.gif";
+						document.body.appendChild(e);
+					},Number.parseInt(Math.random()*100));
+					e._x=r.x+r.width/2;
+					e._y=r.y+r.height/2;
 					e._dx=Math.random()*4-2;
-					e._dy=-0.6;
+					e._dy=-Math.random()*2-10;
 					e._in=setInterval(_coin,16,e);
 				}
 				_show_hint(3e3,3);
 			}
 			else{
 				t.classList.add("a-w");
+				t._c=1;
 			}
 		}
 	}
@@ -122,7 +129,9 @@ document.addEventListener("DOMContentLoaded",()=>{
 				tqe.innerHTML=_render_text(lvl[st_k].questions[st_si].q);
 				tqe.classList.add("txt-q-s");
 				ale.innerHTML="";
+				qa=0;
 				ale.innerHTML=lvl[st_k].questions[st_si].a.map((e,i)=>{
+					qa++;
 					return `<div class="a" onclick="window._check(this,${(i==lvl[st_k].questions[st_si].c?1:0)})"><div class="a-dt">${e}</div></div>`;
 				}).join("");
 				ale.childNodes.forEach((e,i)=>{

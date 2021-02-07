@@ -174,12 +174,12 @@ body {
 	width: 100%;
 	text-align: center;
 	transform: translate(-50%,-50%);
-	text-decoration: line-through rgba(0,0,0,0);
+	text-decoration: underline rgba(0,0,0,0);
 	transition: text-decoration 0.75s, color 0.75s;
 	user-select: none;
 }
 .bg-r .bg .wr .main .a-list .a:hover .a-dt {
-	color: #d9d9d9;
+	color: #8354d6;
 }
 .bg-r .bg .wr .main .a-list .a.a-c .a-dt {
 	color: #ffffff !important;
@@ -193,7 +193,7 @@ body {
 	font-weight: bold;
 }
 .bg-r .bg .wr .main .txt-h-letter {
-	color: #dc830c;
+	color: #ffeb3b;
 	display: table-cell;
 	font-style: italic;
 	transform: translate(0,3px);

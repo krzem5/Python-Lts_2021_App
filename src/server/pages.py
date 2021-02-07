@@ -6,6 +6,7 @@ import os
 
 
 BASE_PATH="web/"
+MIME_TYPES={"png":"image/png","gif":"image/gif","ttf":"font/ttf"}
 with open("web/play_template.html","rb") as f:
 	GAME_TEMPLATE=f.read().split(b"\"$$$__DATA__$$$\"")
 
@@ -51,7 +52,7 @@ def play(url):
 
 @server.route("GET",r"/rsrc/.*")
 def rsrc(url):
-	server.set_header("Content-Type",("image/png" if url[-4:]==".png" else "image/gif"))
+	server.set_header("Content-Type",MIME_TYPES[url.split(".")[-1]])
 	if (os.path.exists(BASE_PATH+url)):
 		server.set_code(200)
 		return utils.cache(BASE_PATH+url)

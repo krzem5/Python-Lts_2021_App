@@ -49,113 +49,50 @@ body {
 	left: 50px;
 	right: 50px;
 	height: calc(100% - 40px);
-	background: #0c0c0c;
 	border-radius: 30px;
 	border: solid 10px #0f0f0f;
 	overflow: hidden;
+	background: url("/rsrc/bg.png");
+	background-repeat: no-repeat;
+	background-position: top;
+	background-size: cover;
+	image-rendering: pixelated;
+}
+.bg-r .bg .wr.start {
+	animation: bg_scroll 2s forwards 3.5s ease-in-out;
 }
 
 
 
-.bg-r .bg .wr .top {
+.bg-r .bg .wr .title {
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100px;
-	background: #1f1f1f;
-	border-bottom: solid 10px #0f0f0f;
-}
-.bg-r .bg .wr .top .icon {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100px;
-	height: 100px;
-	user-select: none;
-}
-.bg-r .bg .wr .top .icon .icon-i {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	text-align: center;
-	display: inline-block;
-	line-height: 100px;
-	vertical-align: middle;
-	font-size: 80px;
-	color: #9cdcf5;
-	text-shadow: 0 0 9px #1889e6, 0 0 9px #1889e6, 0 0 9px #1889e6;
-}
-.bg-r .bg .wr .top .icon .icon-i:hover{
-	cursor: pointer;
-}
-.bg-r .bg .wr .top .title {
-	position: absolute;
-	top: 0;
+	top: 50%;
 	left: 50%;
-	height: 100%;
-	transform: translate(-50%,0);
-	font-family: Turret Road, sans-serif;
-	font-weight: 700;
-	font-size: 70px;
-	text-align: left;
-	line-height: 100px;
-	user-select: none;
+	transform: translate(-50%,-50%);
+	font-family: Kenney Pixel;
+	text-transform: uppercase;
+	opacity: 0;
+	color: #e5e5e5;
+	font-size: 100px;
 }
-.bg-r .bg .wr .top .title .c {
-	color: #bbf49e;
-	text-shadow: 0 0 8px #5be113, 0 0 8px #5be113, 0 0 8px #5be113;
-	transition: color 0.1s, text-shadow 0.1s;
-}
-.bg-r .bg .wr .top .title .c:hover {
-	color: #869380;
-	text-shadow: 0 0 2px #283620, 0 0 2px #283620, 0 0 2px #283620;
-	transition: color 0.1s, text-shadow 0.1s;
-}
-.bg-r .bg .wr .top .c-game {
-	position: absolute;
-	top: 0;
-	right: 15px;
-	width: 265px;
-	height: 100px;
-	user-select: none;
-}
-.bg-r .bg .wr .top .c-game .txt {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	text-align: center;
-	display: inline-block;
-	line-height: 100px;
-	vertical-align: middle;
-	font-size: 30px;
-	color: #edc94a;
-	text-shadow: 0 0 9px #e8bc16, 0 0 9px #e8bc16, 0 0 9px #e8bc16;
-	font-family: Bungee;
-	white-space: nowrap;
-}
-.bg-r .bg .wr .top .c-game .txt:hover{
-	cursor: pointer;
+.bg-r .bg .wr.start .title {
+	opacity: 1;
+	transition: opacity 3s;
+	animation: title_up 2s forwards 3.5s ease-in-out;
 }
 
 
 
 .bg-r .bg .wr .main {
 	position: absolute;
-	top: 120px;
+	top: 100%;
 	left: 0;
 	width: 100%;
 	min-height: calc(100% - 120px);
 	padding: 10px;
-	background: url("/rsrc/bg.png");
-	background-repeat: no-repeat;
-	background-position: bottom;
-	background-size: cover;
-	image-rendering: pixelated;
+}
+.bg-r .bg .wr.start .main {
+	animation: main_up 2s forwards 3.5s ease-in-out;
 }
 .bg-r .bg .wr .main .h {
 	position: absolute;
@@ -296,3 +233,24 @@ body {
 	transition: top 0.25s;
 }
 
+
+
+@font-face{
+	font-family: "Kenney Pixel";
+	src: url("/rsrc/kenney_pixel.ttf") format("truetype");
+}
+@keyframes bg_scroll{
+	100% {
+		background-position: bottom;
+	}
+}
+@keyframes title_up{
+	100% {
+		top: 50px;
+	}
+}
+@keyframes main_up{
+	100% {
+		top: 120px;
+	}
+}

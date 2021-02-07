@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded",()=>{
-	let te=document.querySelector(".title");
 	let bge=document.querySelector(".bg");
 	let wre=document.querySelector(".wr");
 	let be=document.querySelector(".box");
@@ -18,15 +17,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 		wre.style.height=`${h}px`;
 	};
 	window.onresize();
-	document.querySelector(".icon").onclick=()=>{
-		window.location.href="/";
-	};
-	document.querySelector(".txt").onclick=()=>{
-		window.location.href=`/play`;
-	};
-	te.innerHTML=te.innerText.split("").map((e)=>{
-		return `<span class="c">${e}</span>`;
-	}).join("");
 	l0e.onclick=()=>{
 		l0e.classList.add("lvl-s");
 		l1e.classList.remove("lvl-s");
@@ -74,4 +64,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 			});
 		}
 	}
+	setTimeout(()=>{
+		wre.classList.add("start");
+	},1e3);
 },false);
