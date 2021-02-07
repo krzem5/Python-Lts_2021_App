@@ -80,7 +80,7 @@ def _handle(cs,a):
 		c=bytes("Internal Server Error","utf-8")
 		threading.current_thread()._rc=500
 	if (threading.current_thread()._rc!=-1):
-		if (threading.current_thread()._h["Content-Length"]==None):
+		if (threading.current_thread()._h["Content-Length"] is None):
 			threading.current_thread()._h["Content-Length"]=len(c)
 		cs.sendall(bytes(f"HTTP/1.1 {threading.current_thread()._rc} {HTTP_CODE_MAP[threading.current_thread()._rc]}"+"".join([f"\r\n{k}: {v}" for k,v in threading.current_thread()._h.items()])+"\r\n\r\n","utf-8")+c)
 

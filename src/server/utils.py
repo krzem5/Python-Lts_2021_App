@@ -50,7 +50,7 @@ def cache(fp):
 
 def print(*a):
 	global _pq
-	if (_pq==None):
+	if (_pq is None):
 		_pq=[(a,inspect.getouterframes(inspect.currentframe(),2)[1])]
 		threading.Thread(target=_print_q).start()
 	else:

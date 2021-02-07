@@ -1,11 +1,7 @@
-import hashlib
 import json
-import re
-import requests
 import server
 import storage
 import time
-import utils
 import threading
 import secrets
 
@@ -23,7 +19,6 @@ TOKEN_EXP_DATE=31536000
 
 
 _tl=threading.Lock()
-
 
 
 
@@ -63,7 +58,7 @@ def _validate(eb,t,body=False):
 			o[k]=(q[k] if k in q else v["d"])
 			try:
 				o[k]=v["t"](o[k])
-			except:
+			except BaseException:
 				server.set_code(400)
 				server.set_header("Content-Type","application/json")
 				return ({"error":{"code":f"E_{eb.upper()}_FIELD_TYPE","message":f"Field '{k}' should have '{JSON_TYPE_MAP.get(v['t'],'object')}' type, but has '{JSON_TYPE_MAP.get(type(o[k]),'object')}' type"}},False)
@@ -101,7 +96,6 @@ def is_valid(t):
 
 def read_token():
 	h=server.headers()
-	tk=None
 	if ("cookie" in h):
 		for k in h["cookie"].split(b";"):
 			k=k.split(b"=")
