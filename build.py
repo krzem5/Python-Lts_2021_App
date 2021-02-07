@@ -667,12 +667,13 @@ def _minify_html(html,fp,fp_b):
 		css=re.sub(CSS_UNIT_REGEX,br":\1;",re.sub(CSS_HEX_COLOR_REGEX,br"#\1\2\3\4",re.sub(CSS_URL_REGEX,br"url(\2)",re.sub(CSS_WHITESPACE_REGEX,b"",css))))
 		i=0
 		eo=b""
-		vm={}
-		vml=[]
+		kfdl=[]
+		kfl={}
 		gc=[]
 		sc=0
 		pc=0
 		ec=0
+		tl=[]
 		print("    Parsing Styles...")
 		while (i<len(css)):
 			m=re.match(CSS_SELECTOR_VALUE_REGEX,css[i:])
@@ -688,6 +689,9 @@ def _minify_html(html,fp,fp_b):
 						b-=1
 				s=[re.sub(CSS_SELECTOR_WHITESPACE_REGEX,b"",e.strip()) for e in m.group(1).split(b",")]
 				if (re.split(br"\s",s[0])[0]==b"@keyframes"):
+					s=re.split(br"\s",s[0])
+					if (s[1] not in kfl):
+						kfl[s[1]]=0
 					v=[]
 					l=[]
 					t=[]
@@ -705,7 +709,7 @@ def _minify_html(html,fp,fp_b):
 							l=l[:-1]
 							t=t[:-1]
 					if (len(t)>0):
-						eo+=b",".join(s)+b"{"+b"".join([k+b"{"+b";".join([e+b":"+re.sub(CSS_SELECTOR_COMMA_REGEX,b",",v[i][e]) for e in sorted(l[i])])+b"}" for i,k in enumerate(t)])+b"}"
+						kfdl+=[(s[1],b"{"+b"".join([k+b"{"+b";".join([e+b":"+re.sub(CSS_SELECTOR_COMMA_REGEX,b",",v[i][e]) for e in sorted(l[i])])+b"}" for i,k in enumerate(t)])+b"}")]
 						ec+=1
 				elif (len(s)==1 and s[0]==b"@font-face"):
 					v={}
@@ -731,17 +735,57 @@ def _minify_html(html,fp,fp_b):
 						v[k[0].lower()]=k[1]
 					pc+=len(l)
 					if (len(l)>0):
-						sc+=len(ns)
-						fs=b";".join([e+b":"+re.sub(CSS_SELECTOR_COMMA_REGEX,b",",v[e]) for e in l])
-						fsh=hashlib.sha1(fs).hexdigest()
-						if (fsh not in vm):
-							vml.append(fsh)
-							vm[fsh]=(fs,ns)
-						else:
-							vml.remove(fsh)
-							vml.append(fsh)
-							vm[fsh][1].extend(ns)
+						tl+=[(l,v,ns)]
+						for k in l:
+							if (k==b"animation"):
+								if (b"," in re.sub(br"\([^\)]*?\)",b"",v[k])):
+									raise RuntimeError("Commas in animation not yet implemented!")
+								nm=None
+								for e in re.split(br"\s",v[k]):
+									if (re.fullmatch(br"^[a-zA-Z_][a-zA-Z0-9_]*$",e) and e not in [b"running",b"paused",b"none",b"forwards",b"backwards",b"both",b"normal",b"reverse",b"alternate",b"alternate-reverse",b"infinite",b"linear",b"ease",b"ease-in",b"ease-out",b"ease-in-out",b"cubic-bezier",b"step-start",b"step-end",b"jump-start",b"jump-end",b"jump-none",b"jump-both",b"start",b"end"]):
+										nm=e
+										break
+								if (nm==None):
+									raise RuntimeError("No Animation Specified!")
+								if (nm not in kfl):
+									kfl[nm]=1
 			i+=1
+		nkfl={}
+		kfl=[(k,v) for k,v in sorted(kfl.items(),key=lambda e:e[1])]
+		for k,v in kfl:
+			if (v==0):
+				raise RuntimeError(f"@keyframes '{str(k,'utf-8')}' not Used!")
+			nm=_gen_i((nkfl,),"ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+			if (len(nm)<=len(k)):
+				nkfl[k]=nm
+		for k,v in kfdl:
+			eo+=b"@keyframes "+nkfl[k]+v
+		vm={}
+		vml=[]
+		for l,v,ns in tl:
+			sc+=len(ns)
+			fs=b""
+			for i,k in enumerate(l):
+				if (i>0):
+					fs+=b";"
+				if (k==b"animation"):
+					nv=b""
+					for j,e in enumerate(re.split(br"\s",v[k])):
+						if (re.fullmatch(br"^[a-zA-Z_][a-zA-Z0-9_]*$",e) and e not in [b"running",b"paused",b"none",b"forwards",b"backwards",b"both",b"normal",b"reverse",b"alternate",b"alternate-reverse",b"infinite",b"linear",b"ease",b"ease-in",b"ease-out",b"ease-in-out",b"cubic-bezier",b"step-start",b"step-end",b"jump-start",b"jump-end",b"jump-none",b"jump-both",b"start",b"end"]):
+							e=nkfl[e]
+						if (j>0):
+							nv+=b" "
+						nv+=e
+					v[k]=nv
+				fs+=k+b":"+re.sub(CSS_SELECTOR_COMMA_REGEX,b",",v[k])
+			fsh=hashlib.sha1(fs).hexdigest()
+			if (fsh not in vm):
+				vml.append(fsh)
+				vm[fsh]=(fs,ns)
+			else:
+				vml.remove(fsh)
+				vml.append(fsh)
+				vm[fsh][1].extend(ns)
 		return (sl,vm,vml,eo,sc,pc,ec,gc)
 	def _write_css_selector(k,tcm):
 		o=b""

@@ -150,6 +150,10 @@ body {
 .bg-r .bg .wr .main .a-list .a.a-c {
 	transition: opacity 1.5s ease-in-out;
 	animation: to_center 1s forwards ease-in-out;
+	cursor: default !important;
+}
+.bg-r .bg .wr .main .a-list .a.a-w {
+	cursor: default !important;
 }
 .bg-r .bg .wr .main .a-list .a:first-child {
 	top: 0;
