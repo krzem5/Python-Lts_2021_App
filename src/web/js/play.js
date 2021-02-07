@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 		},t);
 	}
 	function _coin(e){
-		e._dy+=10*(1/60);
+		e._dy+=15*(1/60);
 		e._x+=e._dx;
 		e._y+=e._dy;
 		e.style.top=`${e._y}px`;
