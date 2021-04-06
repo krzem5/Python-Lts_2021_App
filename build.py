@@ -10,6 +10,9 @@ import time
 
 with open("./secret.dt","r") as f:
 	APP_NAME,EMAIL,USER_NAME=f.read().replace("\r","").split("\n")[:3]
+
+
+
 CSS_BRACKET_REGEX=re.compile(br"\([^\)]*?\)")
 CSS_CLASS_LETTERS="abcdefghijklmnopqrstuvwxyz"
 CSS_HEX_COLOR_REGEX=re.compile(br"#([0-9a-fA-F])\1([0-9a-fA-F])\2([0-9a-fA-F])\3(\s|;)")
@@ -28,7 +31,7 @@ CSS_WHITESPACE_SPLIT_REGEX=re.compile(br"\s+?")
 HTML_ATTRIBUTE_REGEX=re.compile(br'''([a-zA-Z0-9\-_]+)\s*(?:=\s*"((?:[^\"\\]|\\.)*))?"''')
 HTML_AUTO_CLOSE_TAGS=["area","base","br","col","embed","hr","img","input","link","meta","param","source","track","wbr"]
 HTML_QUOTED_ATTRIBUTE_REGEX=re.compile(br"[^a-z0-9\-_]")
-HTML_REMOVE_WHITEPSACE_REGEX=re.compile(br"(?=(?P<tmp>[^\S ]\s*|\s{2,}))(?P=tmp)(?=(?P<txt>(?=(?P<tmp3>(?:(?=(?P<tmp2>[^<]+))(?P=tmp2)|<(?!\/?(?:textarea|pre)\b))*))(?P=tmp3))(?:<(?=(?P<tmp4>textarea|pre))(?P=tmp4)\b|$))")
+HTML_REMOVE_WHITEPSACE_REGEX=re.compile(br"(?=(?P<tmp>[^\S ]\s*|\s{2,}))(?P=tmp)(?=(?P<txt>(?=(?P<tmp3>(?:(?=(?P<tmp2>[^<]+))(?P=tmp2)|<(?!\/?(?:textarea|pre)\b))*))(?P=tmp3))(?:<(?=(?P<tmp4>textarea|pre))(?P=tmp4)\b|$))",re.I|re.M|re.X)
 HTML_TAG_ATTRIBUTE_MAP={"accept":["input"],"accept-charset":["form"],"accesskey":None,"action":["form"],"alt":["area","img","input"],"async":["script"],"autocomplete":["form","input"],"autofocus":["button","input","select","textarea"],"autoplay":["audio","video"],"charset":["meta","script"],"checked":["input"],"cite":["blockquote","del","ins","q"],"class":None,"cols":["textarea"],"colspan":["td","th"],"content":["meta"],"contenteditable":None,"controls":["audio","video"],"coords":["area"],"data":["object"],"datetime":["del","ins","time"],"default":["track"],"defer":["script"],"dir":None,"dirname":["input","textarea"],"disabled":["button","fieldu-ch-t-set","input","optgroup","option","select","textarea"],"download":["a","area"],"draggable":None,"enctype":["form"],"for":["label","output"],"form":["button","fieldset","input","label","meter","object","output","select","textarea"],"formaction":["button","input"],"headers":["td","th"],"height":["canvas","embed","iframe","img","input","object","video"],"hidden":None,"high":["meter"],"href":["a","area","base","link"],"hreflang":["a","area","link"],"http-equiv":["meta"],"id":None,"ismap":["img"],"kind":["track"],"label":["track","option","optgroup"],"lang":None,"list":["input"],"loop":["audio","video"],"low":["meter"],"max":["input","meter","progress"],"maxlength":["input","textarea"],"media":["a","area","link","source","style"],"method":["form"],"min":["input","meter"],"multiple":["input","select"],"muted":["video","audio"],"name":["button","fieldset","form","iframe","input","map","meta","object","output","param","select","textarea"],"novalidate":["form"],"onabort":["audio","embed","img","object","video"],"onafterprint":["body"],"onbeforeprint":["body"],"onbeforeunload":["body"],"onblur":None,"oncanplay":["audio","embed","object","video"],"oncanplaythrough":["audio","video"],"onchange":None,"onclick":None,"oncontextmenu":None,"oncopy":None,"oncuechange":["track"],"oncut":None,"ondblclick":None,"ondrag":None,"ondragend":None,"ondragenter":None,"ondragleave":None,"ondragover":None,"ondragstart":None,"ondrop":None,"ondurationchange":["audio","video"],"onemptied":["audio","video"],"onended":["audio","video"],"onerror":["audio","body","embed","img","object","script","style","video"],"onfocus":None,"onhashchange":["body"],"oninput":None,"oninvalid":None,"onkeydown":None,"onkeypress":None,"onkeyup":None,"onload":["body","iframe","img","input","link","script","style"],"onloadeddata":["audio","video"],"onloadedmetadata":["audio","video"],"onloadstart":["audio","video"],"onmousedown":None,"onmousemove":None,"onmouseout":None,"onmouseover":None,"onmouseup":None,"onmousewheel":None,"onoffline":["body"],"ononline":["body"],"onpagehide":["body"],"onpageshow":["body"],"onpaste":None,"onpause":["audio","video"],"onplay":["audio","video"],"onplaying":["audio","video"],"onpopstate":["body"],"onprogress":["audio","video"],"onratechange":["audio","video"],"onreset":["form"],"onresize":["body"],"onscroll":None,"onsearch":["input"],"onseeked":["audio","video"],"onseeking":["audio","video"],"onselect":None,"onstalled":["audio","video"],"onstorage":["body"],"onsubmit":["form"],"onsuspend":["audio","video"],"ontimeupdate":["audio","video"],"ontoggle":["details"],"onunload":["body"],"onvolumechange":["audio","video"],"onwaiting":["audio","video"],"onwheel":None,"open":["details"],"optimum":["meter"],"pattern":["input"],"placeholder":["input","textarea"],"poster":["video"],"preload":["audio","video"],"readonly":["input","textarea"],"rel":["a","area","form","link"],"required":["input","select","textarea"],"reversed":["ol"],"rows":["textarea"],"rowspan":["td","th"],"sandbox":["iframe"],"scope":["th"],"selected":["option"],"shape":["area"],"size":["input","select"],"sizes":["img","link","source"],"span":["col","colgroup"],"spellcheck":None,"src":["audio","embed","iframe","img","input","script","source","track","video"],"srcdoc":["iframe"],"srclang":["track"],"srcset":["img","source"],"start":["ol"],"step":["input"],"style":None,"tabindex":None,"target":["a","area","base","form"],"title":None,"translate":None,"type":["a","button","embed","input","link","menu","object","script","source","style"],"usemap":["img","object"],"value":["button","input","li","option","meter","progress","param"],"width":["canvas","embed","iframe","img","input","object","video"],"wrap":["textarea"]}
 HTML_TAG_JS_ATTRIBUTES=["onabort","onafterprint","onbeforeprint","onbeforeunload","onblur","oncanplay","oncanplaythrough","onchange","onclick","oncontextmenu","oncopy","oncuechange","oncut","ondblclick","ondrag","ondragend","ondragenter","ondragleave","ondragover","ondragstart","ondrop","ondurationchange","onemptied","onended","onerror","onfocus","onhashchange","oninput","oninvalid","onkeydown","onkeypress","onkeyup","onload","onloadeddata","onloadedmetadata","onloadstart","onmousedown","onmousemove","onmouseout","onmouseover","onmouseup","onmousewheel","onoffline","ononline","onpagehide","onpageshow","onpaste","onpause","onplay","onplaying","onpopstate","onprogress","onratechange","onreset","onresize","onscroll","onsearch","onseeked","onseeking","onselect","onstalled","onstorage","onsubmit","onsuspend","ontimeupdate","ontoggle","onunload","onvolumechange","onwaiting","onwheel"]
 HTML_TAG_REGEX=re.compile(br"<([!/]?[a-zA-Z0-9\-_]+)\s*(.*?)\s*(/?)>",re.I|re.M|re.X)
@@ -36,9 +39,10 @@ HTML_TAGS=["!doctype","a","abbr","address","area","article","aside","audio","b",
 HTML_URL_REGEX=re.compile(br"^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\xa1\xff0-9]+-?)*[a-z\xa1-\xff0-9]+)(?:\.(?:[a-z\xa1-\xff0-9]+-?)*[a-z\xa1-\xff0-9]+)*(?:\.(?:[a-z\xa1-\xff]{2,})))(?::\d{2,5})?(?:/[^\s]*)?$",re.I|re.S)
 JS_CONST_LETTERS="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 JS_DOCUMENT_CACHE_PROPERTIES=["adoptNode","captureEvents","caretRangeFromPoint","createAttribute","createAttributeNS","createCDATASection","createComment","createDocumentFragment","createElement","createElementNS","createEvent","createNodeIterator","createProcessingInstruction","createRange","createTextNode","createTouch","createTouchList","createTreeWalker","exitPictureInPicture","exitPointerLock","getElementsByClassName","getElementsByTagName","getElementsByTagNameNS","hasStorageAccess","importNode","releaseCapture","releaseEvents","requestStorageAccess","mozSetImageElement","getElementById","querySelector","querySelectorAll","createExpression","createNSResolver","evaluate","clear","close","getElementsByName","hasFocus","open","write","writeln","caretPositionFromPoint","elementFromPoint","elementsFromPoint","getAnimations","getSelection"]
+JS_HTML_STRING_UNESCAPE=re.compile(br"""([^\\])\\(['"])""")
 JS_KEYWORDS=["break","case","catch","const","const","continue","debugger","default","delete","do","else","enum","false","finally","for","function","if","in","instanceof","let","new","null","of","return","switch","this","throw","true","try","typeof","var","var","void","while","with"]
 JS_OPERATORS=["()=>","_=>","=>","...",">>>=",">>=","<<=","|=","^=","&=","+=","-=","*=","/=","%=",";",",","?",":","||","&&","|","^","&","===","==","=","!==","!=","<<","<=","<",">>>",">>",">=",">","++","--","+","-","*","/","%","!","~",".","[","]","{","}","(",")"]
-JS_REGEX_LIST={"dict":re.compile(br"""{\s*(?:[$a-zA-Z0-9_]+|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)\s*:\s*"""),"dict_elem":re.compile(br""",\s*(?:[$a-zA-Z0-9_]+|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)\s*:\s*"""),"float":re.compile(br"^\d+\.\d*(?:[eE][-+]?\d+)?|^\d+(?:\.\d*)?[eE][-+]?\d+|^\.\d+(?:[eE][-+]?\d+)?"),"int":re.compile(br"0[xX][\da-fA-F]+|0[0-7]*|\d+"),"identifier":re.compile(br"\.?[$a-zA-Z0-9_]+(?:\.[$a-zA-Z0-9_]+)*"),"string":re.compile(br"""'(?:[^'\\]|\\.)*'|^"(?:[^"\\]|\\.)*"|^`(?:[^`\\]|\\.)*`"""),"regex":re.compile(br"\/(?:\\.|\[(?:\\.|[^\]])*\]|[^\/])+\/[gimy]*"),"line_break":re.compile(br"[\n\r]+|/\*(?:.|[\r\n])*?\*/"),"whitespace":re.compile(br"[\ \t]+|//.*?(?:[\r\n]|$)"),"operator":re.compile(bytes("|".join([re.sub(r"([\?\|\^\&\(\)\{\}\[\]\+\-\*\/\.])",r"\\\1",e) for e in JS_OPERATORS]),"utf-8"))}
+JS_REGEX_LIST={"dict":re.compile(br"""{\s*(?:[$a-zA-Z0-9_]+|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)\s*:\s*"""),"dict_elem":re.compile(br""",\s*(?:[$a-zA-Z0-9_]+|'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)\s*:\s*"""),"float":re.compile(br"\d+\.\d*(?:[eE][-+]?\d+)?|^\d+(?:\.\d*)?[eE][-+]?\d+|^\.\d+(?:[eE][-+]?\d+)?"),"int":re.compile(br"0[xX][\da-fA-F]+|0[0-7]*|\d+"),"identifier":re.compile(br"\.?[$_a-zA-Z0-9]+(?:\.[$_a-zA-Z0-9]+)*"),"string":re.compile(br"""'(?:[^'\\]|\\.)*'|^"(?:[^"\\]|\\.)*"|^`(?:[^`\\]|\\.)*`"""),"regex":re.compile(br"\/(?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+\/(?!\/)[igm]{0,3}"),"line_break":re.compile(br"[\n\r]+|/\*(?:.|[\r\n])*?\*/"),"whitespace":re.compile(br"[\ \t]+|//.*?(?:[\r\n]|$)"),"operator":re.compile(bytes("|".join([re.sub(r"([\?\|\^\&\(\)\{\}\[\]\+\-\*\/\.])",r"\\\1",e) for e in JS_OPERATORS]),"utf-8"))}
 JS_RESERVED_IDENTIFIERS=JS_KEYWORDS+["AggregateError","alert","arguments","Array","ArrayBuffer","AsyncFunction","AsyncGenerator","AsyncGeneratorFunction","atob","Atomics","BigInt","BigInt64Array","BigUint64Array","blur","Boolean","btoa","caches","cancelAnimationFrame","cancelIdleCallback","captureEvents","chrome","clearInterval","clearTimeout","clientInformation","close","closed","confirm","console","cookieStore","createImageBitmap","crossOriginIsolated","crypto","customElements","DataView","Date","decodeURI","decodeURIComponent","defaultStatus","defaultstatus","devicePixelRatio","document","encodeURI","encodeURIComponent","Error","escape","eval","EvalError","external","fetch","find","Float32Array","Float64Array","focus","frameElement","frames","Function","Generator","GeneratorFunction","getComputedStyle","getSelection","globalThis","history","Image","indexedDB","Infinity","innerHeight","innerWidth","Int16Array","Int32Array","Int8Array","InternalError","Intl","isFinite","isNaN","isSecureContext","JSON","length","localStorage","location","locationbar","Map","matchMedia","Math","menubar","moveBy","moveTo","NaN","navigator","Number","Object","open","openDatabase","opener","origin","originIsolated","outerHeight","outerWidth","pageXOffset","pageYOffset","parent","parseFloat","parseInt","performance","personalbar","postMessage","print","Promise","prompt","Proxy","queueMicrotask","RangeError","ReferenceError","Reflect","RegExp","releaseEvents","requestAnimationFrame","requestIdleCallback","resizeBy","resizeTo","screen","screenLeft","screenTop","screenX","screenY","scroll","scrollbars","scrollBy","scrollTo","scrollX","scrollY","self","sessionStorage","Set","setInterval","setTimeout","SharedArrayBuffer","showDirectoryPicker","showOpenFilePicker","showSaveFilePicker","speechSynthesis","status","statusbar","stop","String","styleMedia","Symbol","SyntaxError","toolbar","top","trustedTypes","TypeError","Uint16Array","Uint32Array","Uint8Array","Uint8ClampedArray","undefined","unescape","uneval","URIError","visualViewport","WeakMap","WeakSet","WebAssembly","webkitCancelAnimationFrame","webkitRequestAnimationFrame","webkitRequestFileSystem","webkitResolveLocalFileSystemURL","WebSocket","window"]
 JS_STRING_HTML_TAG_REGEX=re.compile(br"<(/?(?:"+bytes(r"|".join(sorted(HTML_TAGS,key=lambda e:-len(e))),"utf-8")+b"))")
 JS_VAR_LETTERS="abcdefghijklmnopqrstuvwxyz"
@@ -49,12 +53,12 @@ USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 def _minify_html(html,fp,fp_b):
 	def _get_url_cache(url):
 		h=hashlib.md5(url).hexdigest()
-		if (not ntpath.exists("__url_cache")):
+		if (not os.path.exists("__url_cache")):
 			os.mkdir("__url_cache")
 		if (not hasattr(_get_url_cache,"_d")):
 			_get_url_cache._d={}
 		if (h not in _get_url_cache._d):
-			if (not ntpath.exists(f"__url_cache/{h}")):
+			if (not os.path.exists(f"__url_cache/{h}")):
 				print(f"    Downloading '{str(url,'utf-8')}'...")
 				with open(f"__url_cache/{h}","wb") as f:
 					_get_url_cache._d[h]=requests.get(url,headers={"User-Agent":USER_AGENT}).content
@@ -84,7 +88,7 @@ def _minify_html(html,fp,fp_b):
 					v=v//len(b)
 				o=b[0]*(n-len(o))+o
 			return bytes(o,"utf-8")
-		if (r==None):
+		if (r is None):
 			r=JS_RESERVED_IDENTIFIERS[:]
 		for k in il:
 			r+=k.values()
@@ -110,10 +114,10 @@ def _minify_html(html,fp,fp_b):
 			ss,st,sc,sp,se=km.group(1),km.group(2),km.group(3),km.group(4),km.group(5)
 			if (len(ss)>0 and ss in b"+~"):
 				raise RuntimeError("CSS Selector Symbols '+' and '~' aren't Implemented Yet!")
-			if ((ss==b">" or st==b"*" or (len(st)>0 and st[:1]!=b"#") or (1 if len(st) else 0)+sc.count(b".")>1 or len(se)>0) and ps==-1):
+			if ((ss==b">" or st==b"*" or (len(st)>0 and st[:1]!=b"#") or (1 if len(st) else 0)+sc.count(b".")>1) and ps==-1):
 				ps=len(l)-(0 if (1 if len(st) else 0)+sc.count(b".")>1 else 1)
 			if (b":not" in se):
-				print("      CSS Selector :not(...) has been Ignored!")
+				print("CSS Selector :not(...) has been Ignored!")
 			l+=[(ss,st,sc,sp,se)]
 			j+=km.end(0)
 		if (l[0][2].count(b".")==1 and l[0][2][1:] not in gc):
@@ -143,20 +147,18 @@ def _minify_html(html,fp,fp_b):
 					o+=[("operator",b"...")]
 				o+=[("identifier",k[0])]
 			return o
-		def _tokenize(s,n=False):
+		def _tokenize(s,c_rgx):
 			i=0
 			o=[]
 			b=0
 			while (i<len(s)):
 				e=False
 				for k,v in JS_REGEX_LIST.items():
-					if (k=="regex" and n==True):
+					if (k=="regex" and c_rgx==False):
 						continue
 					mo=re.match(v,s[i:])
 					if (mo!=None):
 						m=mo.group(0)
-						if (k=="regex" and b"\n" in m):
-							continue
 						if (k=="line_break"):
 							o+=[("operator",b";")]
 						elif (k=="string" and m[:1]==b"`"):
@@ -165,7 +167,7 @@ def _minify_html(html,fp,fp_b):
 							f=False
 							while (j<len(m)):
 								if (m[j:j+2]==b"${"):
-									l,tj=_tokenize(m[j+2:],True)
+									l,tj=_tokenize(m[j+2:],False)
 									j+=tj+2
 									o+=[("string"+("M" if f==True else "S"),(b"`"+ts[1:] if f==False else b"}"+ts)+b"${")]+l
 									ts=b""
@@ -195,7 +197,7 @@ def _minify_html(html,fp,fp_b):
 				raise RuntimeError(f"Unable to Match JS Regex: {str(s[i:],'utf-8')}")
 			return (o,i)
 		print("    Tokenizing...")
-		tl,_=_tokenize(js)
+		tl,_=_tokenize(js,True)
 		i=0
 		vm=[{}]
 		ef=[]
@@ -215,9 +217,9 @@ def _minify_html(html,fp,fp_b):
 						if (len(idl)>1 and b"document."+idl[1] not in vfm):
 							vfm[b"document."+idl[1]]=1
 							if (b"document" not in vfm):
-								vfm[b"document"]=1
+								vfm[b"document"]=2
 							else:
-								vfm[b"document"]+=1
+								vfm[b"document"]+=2
 							if (b"bind" not in vfma):
 								vfma[b"bind"]=1
 							else:
@@ -237,7 +239,7 @@ def _minify_html(html,fp,fp_b):
 							if (bl not in vdl):
 								vdl[bl]=None
 							else:
-								if (vdl[bl]==None):
+								if (vdl[bl] is None):
 									raise RuntimeError
 								tl=tl[:i-1]+tl[i:]
 								i-=1
@@ -245,7 +247,7 @@ def _minify_html(html,fp,fp_b):
 								vdl[bl]=(vdl[bl],i)
 						elif (str(idl[0],"utf-8") not in JS_RESERVED_IDENTIFIERS and (i==0 or (tl[i-1][0]!="operator" or tl[i-1][1]!=b"."))):
 							mv=_map_value(idl[0],vm)
-							if (mv==None):
+							if (mv is None):
 								print(f"      Variable '{str(idl[0],'utf-8')}' is not mapped!")
 								v_nm=True
 							else:
@@ -315,12 +317,12 @@ def _minify_html(html,fp,fp_b):
 							if (bl in vdl and nm!=None):
 								ftl=ftl[1:]
 								tl[vdl[bl]]=("operator",b",")
-								tl=tl[:vdl[bl]+1]+ftl+([("operator",b"{")] if cbl==None else [])+tl[si+fl+j:i]+([("operator",b"}")] if cbl==None else [])+[("operator",b";")]+tl[vdl[bl]+1:si]+tl[i+1:]
-								i+=-fl+len(ftl)-2+(2 if cbl==None else 0)-j+1
+								tl=tl[:vdl[bl]+1]+ftl+([("operator",b"{")] if cbl is None else [])+tl[si+fl+j:i]+([("operator",b"}")] if cbl is None else [])+[("operator",b";")]+tl[vdl[bl]+1:si]+tl[i+1:]
+								i+=-fl+len(ftl)-2+(2 if cbl is None else 0)-j+1
 								vdl[bl]=i+1
 							else:
-								tl=tl[:si]+ftl+([("operator",b"{")] if cbl==None else [])+tl[si+fl+j:i]+([("operator",b"}")] if cbl==None else [])+[("operator",b";")]+tl[i+1:]
-								i+=-fl+len(ftl)-2+(2 if cbl==None else 0)-j+1
+								tl=tl[:si]+ftl+([("operator",b"{")] if cbl is None else [])+tl[si+fl+j:i]+([("operator",b"}")] if cbl is None else [])+[("operator",b";")]+tl[i+1:]
+								i+=-fl+len(ftl)-2+(2 if cbl is None else 0)-j+1
 								if (nm!=None):
 									vdl[bl]=i+1
 						vm=vm[:-1]
@@ -334,7 +336,7 @@ def _minify_html(html,fp,fp_b):
 					s_ee=False
 				elif (tl[i][1]==b";"):
 					if (bl in vdl):
-						if (vdl[bl]==None):
+						if (vdl[bl] is None):
 							vdl[bl]=i
 						elif (type(vdl[bl])!=int):
 							ti,si=vdl[bl]
@@ -390,7 +392,7 @@ def _minify_html(html,fp,fp_b):
 							vm[-1][tl[i][1]]=_gen_i(vm,JS_VAR_LETTERS)
 							al+=[(vm[-1][tl[i][1]],va)]
 							i+=1
-						if (al==None or tl[i][0]!="operator" or tl[i][1]!=b"=>"):
+						if (al is None or tl[i][0]!="operator" or tl[i][1]!=b"=>"):
 							i=si
 							vm=vm[:-1]
 						else:
@@ -432,36 +434,57 @@ def _minify_html(html,fp,fp_b):
 		if (v_nm):
 			quit()
 		if (bl!=0):
-			raise RuntimeError("JS Contains Some Unclosed Brackets")
+			raise RuntimeError("JS Contains Unclosed Brackets")
 		si=-1
 		sw=0
 		bf=b""
 		il=[]
 		cl=[]
 		icc=0
+		sw=[-1]
+		sw_b=[-1]
+		sw_sb=[-1]
+		b=0
+		sb=0
 		print("    Parsing HTML Strings...")
 		for i,k in enumerate(tl):
-			if (k[0]=="stringS" and JS_STRING_HTML_TAG_REGEX.search(k[1][1:])):
+			if (k[0]=="stringS" and JS_STRING_HTML_TAG_REGEX.match(k[1][1:])):
 				si=i+0
 			if (si!=-1):
 				if (k[0] in ["stringS","stringM","stringE"]):
 					il+=[(len(bf),len(bf)+len(k[1])-(2 if k[0]=="stringE" else 3),i)]
 					bf+=k[1][1:-(1 if k[0]=="stringE" else 2)]
-					sw=0
+					sw=[-1]
+					sw_b=[-1]
+					sw_sb=[-1]
+					b=0
+					sb=0
 				else:
 					if (k[0]=="operator"):
 						if (k[1]==b"?"):
-							if (sw!=0):
-								raise RuntimeError("Nested Ternary Operators not Implemented!")
-							sw=1
+							if (sb!=sw_sb[-1]):
+								sw+=[0]
+								sw_b+=[b]
+								sw_sb+=[sb]
+							sw[-1]=1
+							sb+=1
 						elif (k[1]==b":"):
-							if (sw!=1):
+							sb-=1
+							while (sw_sb[-1]>sb):
+								sw=sw[:-1]
+								sw_b=sw_b[:-1]
+								sw_sb=sw_sb[:-1]
+							if (sw[-1]!=1):
 								raise RuntimeError("Quadruple Operators not Implemented!")
-							sw=2
-					if (k[0]=="string" and ((sw==1 and tl[i+1][0]=="operator" and tl[i+1][1]==b":") or (sw==2 and tl[i+1][0] in ["stringM","stringE"]))):
-						il+=[(len(bf)+(1 if sw==2 else 0),len(bf)+len(k[1])+(1 if sw==2 else 0)-2,i)]
-						bf+=(b" " if sw==2 else b"")+k[1][1:-1]
-			if (k[0]=="string" and JS_STRING_HTML_TAG_REGEX.search(k[1][1:])):
+							sw[-1]=2
+						elif (k[1] in b"[{"):
+							b+=1
+						elif (k[1] in b"]}"):
+							b-=1
+					elif (k[0]=="string" and b==0 and b==sw_b[-1] and (i==len(tl)-1 or tl[i+1][0]!="operator" or tl[i+1][1]!=b"?")):
+						il+=[(len(bf)+(1 if sw[-1]==2 else 0),len(bf)+len(k[1])+(1 if sw[-1]==2 else 0)-2,i)]
+						bf+=(b" " if sw[-1]==2 else b"")+k[1][1:-1]
+			if (k[0]=="string" and JS_STRING_HTML_TAG_REGEX.match(k[1][1:])):
 				il+=[(len(bf),len(bf)+len(k[1])-2,i)]
 				bf+=k[1][1:-1]
 			if ((k[0]=="stringE" and si!=-1) or (k[0]=="string" and si==-1)):
@@ -469,16 +492,29 @@ def _minify_html(html,fp,fp_b):
 				i=0
 				while (i<len(bf)):
 					m=JS_STRING_HTML_TAG_REGEX.search(bf[i:])
-					if (m==None):
+					if (not m):
 						break
 					i+=m.end(0)
 					e=bf[i:i+1]
 					ek=b""
 					ev=None
+					e_nc=False
 					while (e!=b">" and i<len(bf)):
-						if (e in b" \t\r\n\f\v" and (ev==None or ev[0]==b"\"")):
+						if (e in b" \t\r\n\f\v" and (ev is None or ev[0]==b"\"")):
 							if (ev!=None):
 								raise RuntimeError("Not-Quoted JS String HTML not Supported!")
+						elif (e_nc):
+							e_nc=False
+							if (ev is None):
+								ek+=e
+							else:
+								ev+=e
+						elif (e==b"\\"):
+							e_nc=True
+							if (ev is None):
+								ek+=b"\\"
+							else:
+								ev+=b"\\"
 						elif (e==b"="):
 							if (ev!=None and ev[:1]!=b"\""):
 								raise RuntimeError("Multiple '=' Signs in String HTML in JS")
@@ -487,16 +523,17 @@ def _minify_html(html,fp,fp_b):
 							if (len(ev)>0):
 								ev=ev[1:]
 								if (ek==b"class"):
-									evi=-len(ev)
-									for e in ev.split(b" "):
-										for sk in il:
-											if (sk[0]<=i+evi and i+evi<sk[1]):
-												if ((tl[sk[2]][0]!="string" or k[0]=="string") and b" " not in ev):
-													cl.insert(0,(0,b"\""+e+b"\"",sk[2],i+evi-sk[0]-1))
-												else:
-													cl.insert(0,(0,e,sk[2],i+evi-sk[0]))
-												break
-										evi+=len(e)+1
+									if (len(ev)>0):
+										evi=-len(ev)
+										for e in ev.split(b" "):
+											for sk in il:
+												if (sk[0]<=i+evi and i+evi<sk[1]):
+													if ((tl[sk[2]][0]!="string" or k[0]=="string") and b" " not in ev):
+														cl.insert(0,(0,b"\""+e+b"\"",sk[2],i+evi-sk[0]-1))
+													else:
+														cl.insert(0,(0,e,sk[2],i+evi-sk[0]))
+													break
+											evi+=len(e)+1
 								elif (str(ek,"utf-8") in HTML_TAG_JS_ATTRIBUTES):
 									m=JS_REGEX_LIST["identifier"].match(ev)
 									if (m!=None):
@@ -517,7 +554,7 @@ def _minify_html(html,fp,fp_b):
 												cl.insert(0,(1,ev[:m.end(0)],sk[2],i-len(ev)-sk[0]))
 												icc+=1
 												break
-								elif (b" " not in ev and b":" not in ev and len(ev)>0):
+								elif (b" " not in ev and len(ev)>0):
 									for sk in il:
 										if (sk[0]<=i-len(ev) and i-len(ev)<sk[1]):
 												cl.insert(0,(2,ev,sk[2],i-sk[0]-len(ev)-1))
@@ -528,7 +565,7 @@ def _minify_html(html,fp,fp_b):
 							else:
 								ev+=b"\""
 						else:
-							if (ev==None):
+							if (ev is None):
 								ek+=e
 							else:
 								ev+=e
@@ -539,7 +576,6 @@ def _minify_html(html,fp,fp_b):
 				il=[]
 		print(f"    Finding Global Object Substitutions ({len(vfm.keys())} object{('s' if len(vfm.keys())!=1 else '')})...")
 		cvml=[]
-		dpc=False
 		for k,v in vfm.items():
 			if (v>1):
 				cvml+=[(len(k)*v,k,v,False)]
@@ -583,16 +619,15 @@ def _minify_html(html,fp,fp_b):
 			for i,e in enumerate(esl):
 				if (e[0]=="identifier"):
 					if (st==1):
-						v=b""
-						for j,k in enumerate(e[1].split(b".")):
-							if (j==0):
-								v+=(cvm[k] if k in cvm else k)
+						idl=e[1].split(b".")
+						if (idl[0] in cvm):
+							idl[0]=cvm[idl[0]]
+						for j,k in enumerate(idl[1:]):
+							if (k in cvma):
+								idl[j+1]=b"["+cvma[k]+b"]"
 							else:
-								if (k in cvma):
-									v+=b"["+cvma[k]+b"]"
-								else:
-									v+=b"."+k
-						esl[i]=("identifier",v)
+								idl[j+1]=b"."+k
+						esl[i]=("identifier",b"".join(idl))
 					elif (st==2 and e[1] in cvm):
 						esl[i]=("identifier",cvm[e[1]])
 					st=(st+1)%3
@@ -650,12 +685,13 @@ def _minify_html(html,fp,fp_b):
 				if (len(l)==0):
 					si=i
 				l+=[(v,(True if k=="css_class" else False))]
-			elif (len(l)>0):
-				h=tuple(l)
-				if (h not in vfms_f):
-					vfms_f[h]=(l,1,[(si,i)])
-				else:
-					vfms_f[h]=(l,vfms_f[h][1]+1,vfms_f[h][2]+[(si,i)])
+			else:
+				if (len(l)>0):
+					h=tuple(l)
+					if (h not in vfms_f):
+						vfms_f[h]=(l,1,[(si,i)])
+					else:
+						vfms_f[h]=(l,vfms_f[h][1]+1,vfms_f[h][2]+[(si,i)])
 				l=[]
 		return (tl,cvm,cvma,vfms,vfms_f,sl)
 	def _parse_css(css,tcm):
@@ -838,7 +874,7 @@ def _minify_html(html,fp,fp_b):
 				if (tl[i][0]=="keyword" and tl[i][1] in [b"of",b"in"]):
 					o+=b" "
 				o+=tl[i][1]
-				if (tl[i][0]=="keyword" and (tl[i][1] in [b"let",b"const",b"var",b"throw",b"new",b"of",b"in"] or (i+1<len(tl) and tl[i][1]==b"else" and tl[i+1][0]=="keyword" and tl[i+1][1]==b"if") or (tl[i][1]==b"return" and (i==len(tl)-2 or tl[i+1][0]!="operator" or tl[i+1][1] not in b")]}")))):
+				if (tl[i][0]=="keyword" and (tl[i][1] in [b"let",b"const",b"var",b"throw",b"new",b"of",b"in"] or (i+1<len(tl) and tl[i][1]==b"else" and tl[i+1][0]=="keyword" and tl[i+1][1]==b"if") or (tl[i][1]==b"return" and (i==len(tl)-2 or ((tl[i+1][0]!="operator" or tl[i+1][1] not in b")]}") and (tl[i+1][0] not in ["string","stringS"] or tl[i+1][1][:1] not in b"'\"`")))))):
 					o+=b" "
 			i+=1
 		return (o,i)
@@ -885,30 +921,37 @@ def _minify_html(html,fp,fp_b):
 	js_t=None
 	tcm={}
 	stcm={}
-	html=re.sub(HTML_REMOVE_WHITEPSACE_REGEX,br"",html,re.I|re.M|re.X)
+	html=HTML_REMOVE_WHITEPSACE_REGEX.sub(br"",html)
 	i=0
 	ttc=0
 	vfm={}
 	vfma={}
+	svg=0
+	n_pm={}
 	print("  Parsing HTML...")
 	while (i<len(html)):
 		m=HTML_TAG_REGEX.search(html[i:])
-		if (m==None):
+		if (m is None):
 			break
 		j=m.start(0)
 		if (j!=0):
-			if (r==None):
+			if (r is None):
 				raise RuntimeError("Text Before <html> Tag")
 			c[-1][2].append(("__text__",html[i:i+j]))
 		t_nm=m.group(1)
-		if (str(t_nm.lower()[(1 if t_nm[:1]==b"/" else 0):],"utf-8") not in HTML_TAGS):
+		if (svg==0 and str(t_nm.lower()[(1 if t_nm[:1]==b"/" else 0):],"utf-8") not in HTML_TAGS):
 			raise RuntimeError(f"Unknown Tag '{str(t_nm,'utf-8')}'")
+		if (t_nm==b"svg"):
+			svg+=1
+		elif (t_nm==b"/svg"):
+			svg-=1
 		e=m.group(3)
 		v=None
-		pm={}
+		pm={**n_pm}
+		n_pm.clear()
 		if (len(m.group(2))>0):
 			for k,v in re.findall(HTML_ATTRIBUTE_REGEX,m.group(2)):
-				if (not (k[:5]==b"data-" and len(k)>5) and str(k,"utf-8") not in HTML_TAG_ATTRIBUTE_MAP or (HTML_TAG_ATTRIBUTE_MAP[str(k,"utf-8")]!=None and str(t_nm,"utf-8") not in HTML_TAG_ATTRIBUTE_MAP[str(k,"utf-8")])):
+				if (svg==0 and (not (k[:5]==b"data-" and len(k)>5) and str(k,"utf-8") not in HTML_TAG_ATTRIBUTE_MAP or (HTML_TAG_ATTRIBUTE_MAP[str(k,"utf-8")]!=None and str(t_nm,"utf-8") not in HTML_TAG_ATTRIBUTE_MAP[str(k,"utf-8")]))):
 					raise RuntimeError(f"Tag <{str(t_nm,'utf-8')}> Contains an Invalid Attribute '{str(k,'utf-8')}'")
 				elif (str(k,"utf-8") in HTML_TAG_JS_ATTRIBUTES):
 					sm=JS_REGEX_LIST["identifier"].match(v)
@@ -928,7 +971,7 @@ def _minify_html(html,fp,fp_b):
 				pm[k]=v
 		v=None
 		if (t_nm==b"script" and b"type" in pm and pm[b"type"]==b"text/javascript" and b"src" in pm and b"async" not in pm and b"defer" not in pm):
-			if (ntpath.exists(fp_b+str(pm[b"src"],"utf-8"))):
+			if (os.path.exists(fp_b+str(pm[b"src"],"utf-8"))):
 				print(f"  Found Local JavaScript: '{fp_b+str(pm[b'src'],'utf-8')}'")
 				with open(fp_b+str(pm[b"src"],"utf-8"),"rb") as rf:
 					dt=rf.read()
@@ -940,7 +983,7 @@ def _minify_html(html,fp,fp_b):
 				raise RuntimeError(f"Unable to Decode <script> src: '{pm[b'src']}'")
 			pm={b"type":b"text/javascript"}
 		elif (t_nm==b"link" and b"rel" in pm and pm[b"rel"]==b"stylesheet" and b"href" in pm):
-			if (ntpath.exists(fp_b+str(pm[b"href"],"utf-8"))):
+			if (os.path.exists(fp_b+str(pm[b"href"],"utf-8"))):
 				print(f"  Found Local CSS: '{fp_b+str(pm[b'href'],'utf-8')}'")
 				with open(fp_b+str(pm[b"href"],"utf-8"),"rb") as rf:
 					dt=rf.read()
@@ -952,12 +995,26 @@ def _minify_html(html,fp,fp_b):
 				raise RuntimeError(f"Unable to Decode <link> href: '{pm[b'href']}'")
 			t_nm=b"style"
 			pm={b"type":b"text/css"}
-		if (t_nm.lower()!=b"!doctype" and (v==None or ((v[0]=="__css__" and css_t==None) or (v[0]=="__js__" and js_t==None)))):
+		elif (t_nm==b"img" and b"src" in pm and pm[b"src"][:1]==b"/" and pm[b"src"][-4:]==b".svg"):
+			print(f"  Found Local SVG Image: '{fp_b+str(pm[b'src'],'utf-8')}'")
+			with open(fp_b+str(pm[b"src"],"utf-8"),"rb") as rf:
+				dt=rf.read()
+				l+=len(dt)
+				html=html[:i]+HTML_REMOVE_WHITEPSACE_REGEX.sub(br"",dt)+html[i+m.end(0):]
+				for k,v in pm.items():
+					if (k!=b"src"):
+						n_pm[k]=v
+				continue
+		elif (t_nm==b"svg"):
+			svg+=1
+		elif (t_nm==b"/svg"):
+			svg-=1
+		if (t_nm.lower()!=b"!doctype" and (v is None or ((v[0]=="__css__" and css_t is None) or (v[0]=="__js__" and js_t is None)))):
 			if (b"class" in pm):
 				cs=b""
 				for ce in c:
 					cs+=ce[0]+(b"#"+ce[1][b"id"] if b"id" in ce[1] else b"")+(b"."+ce[1][b"class"].replace(b" ",b".") if b"class" in ce[1] else b"")+b"$"
-				cs+=t_nm
+				cs+=t_nm+(b"#"+pm[b"id"] if b"id" in pm else b"")+(b"."+pm[b"class"].replace(b" ",b".") if b"class" in pm else b"")
 				for tc in pm[b"class"].split(b" "):
 					if (tc not in tcm):
 						tcm[tc]=1
@@ -967,7 +1024,7 @@ def _minify_html(html,fp,fp_b):
 						stcm[tc]=[cs]
 					elif (cs not in stcm[tc]):
 						stcm[tc]+=[cs]
-			if (r==None):
+			if (r is None):
 				ttc+=1
 				r=(t_nm,pm,[])
 				c=[r]
@@ -985,13 +1042,13 @@ def _minify_html(html,fp,fp_b):
 						c+=[c[-1][2][-1]]
 		if (v!=None):
 			if (v[0]=="__js__"):
-				if (js_t==None):
+				if (js_t is None):
 					c[-1][2].append((v[1],1))
 					js_t=c[-1][2]
 				else:
 					js_t[0]=(v[1]+b"\n\n\n"+js_t[0][0],js_t[0][1]+1)
 			else:
-				if (css_t==None):
+				if (css_t is None):
 					c[-1][2].append((v[1],1))
 					css_t=c[-1][2]
 					c=c[:-1]
@@ -1014,7 +1071,16 @@ def _minify_html(html,fp,fp_b):
 	print(f"  Generating Class Names ({len(tcm.keys())} item{('s' if len(tcm.keys())!=1 else '')})...")
 	for k,v in stcm.items():
 		if (len(v)>1):
-			raise RuntimeError(f"Duplicate Non-Global Class '{str(k,'utf-8')}' in {len(v)} Tags: ['{(chr(39)+'; '+chr(39)).join([str(e,'utf-8').replace('$',' > ') for e in v])}']")
+			bl=v[0].count(b"$")
+			b=v[0][:-len(v[0].split(b"$")[-1])-1]
+			ok=True
+			for e in v[1:]:
+				if (e.count(b"$")!=bl or e[:-len(e.split(b"$")[-1])-1]!=b):
+					ok=False
+					break
+			if (ok==True):
+				continue
+			raise RuntimeError(f"Duplicate Non-Global Multi-Level Class '{str(k,'utf-8')}' in {len(v)} Tags: ['{(chr(39)+'; '+chr(39)).join([str(e,'utf-8').replace('$',' > ') for e in v])}']")
 	ntcm={}
 	for k,v in sorted(tcm.items(),key=lambda e:-len(e[0])*e[1]):
 		ntcm[k]=_gen_i([ntcm],CSS_CLASS_LETTERS)
@@ -1051,7 +1117,7 @@ def _minify_html(html,fp,fp_b):
 					sl=[("keyword",b"let")]
 				else:
 					sl+=[("operator",b",")]
-				sl+=[("identifier",mv),("operator",b"="),("string",b"\""+k[1].replace(b"\"",b"\\\"")+b"\"")]
+				sl+=[("identifier",mv),("operator",b"="),("string",b"`"+JS_HTML_STRING_UNESCAPE.sub(br"\1\2",k[1].replace(b"`",b"\\`"))+b"`")]
 		for k,v in sorted(cvms.items(),key=lambda e:-e[0][1]):
 			tl=tl[:k[0]]+[("identifier",v)]+tl[k[1]:]
 		if (len(sl)>0):
@@ -1066,7 +1132,7 @@ def _minify_html(html,fp,fp_b):
 		css_t[0]=("__text__",css_o)
 		css_s=f"{sl} -> {len(css_o)} (-{round(10000-10000*len(css_o)/sl)/100}%)"
 	print(f"  Writing HTML ({ttc} tag{('s' if ttc!=1 else '')})...")
-	o=b"<!DOCTYPE html>"+_write_html(r,ntcm,js_om)
+	o=b"<!DOCTYPE html>\n"+_write_html(r,ntcm,js_om)
 	print(f"Minified HTML: {{\n  JS: {js_s}\n  CSS: {css_s}\n  HTML: {l} -> {len(o)} (-{round(10000-10000*len(o)/l)/100}%)\n}}")
 	return o
 

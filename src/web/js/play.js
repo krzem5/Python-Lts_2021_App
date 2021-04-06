@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 				t._c=1;
 			}
 		}
-	}
+	};
 	function _next(){
 		st_kb_s=0;
 		if (st_s==0){
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 		if (st_kb_s==1){
 			_next();
 		}
-	}
+	};
 	document.body.onmouseup=document.body.ontouchup;
 	fetch("/api/storyline").then((e)=>e.json()).then((e)=>{
 		lvl=e[dt.level];
