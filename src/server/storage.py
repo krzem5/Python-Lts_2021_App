@@ -104,6 +104,7 @@ def _read_fs(bt,fp="",_l=False):
 			raise RuntimeError(f"Unknown File Type '{k['type']}'")
 	if (_l==False):
 		_tl.release()
+	return []
 
 
 
@@ -147,7 +148,7 @@ def _write_fs():
 							try:
 								dt=str(_fs[k][1],"cp1252").replace("\r\n","\n")
 								b64=False
-							except:
+							except UnicodeDecodeError:
 								pass
 						if (b64==True):
 							b_sha=True

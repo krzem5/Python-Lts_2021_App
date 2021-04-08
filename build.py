@@ -1,5 +1,4 @@
 import hashlib
-import ntpath
 import os
 import re
 import requests

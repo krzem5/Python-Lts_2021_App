@@ -6,10 +6,9 @@ import time
 
 
 
-global _c,_pq,_sc
+global _c,_pq
 _c={}
 _pq=None
-_sc=None
 _tl=threading.Lock()
 
 
