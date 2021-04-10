@@ -59,7 +59,7 @@ def _validate(eb,t,body=False):
 			o[k]=(q[k] if k in q else v["d"])
 			try:
 				o[k]=v["t"](o[k])
-			except BaseException:
+			except ValueError:
 				server.set_code(400)
 				server.set_header("Content-Type","application/json")
 				return ({"error":{"code":f"E_{eb.upper()}_FIELD_TYPE","message":f"Field '{k}' should have '{JSON_TYPE_MAP.get(v['t'],'object')}' type, but has '{JSON_TYPE_MAP.get(type(o[k]),'object')}' type"}},False)
@@ -114,49 +114,44 @@ def get_user_data(tk):
 
 
 
-@server.route("POST",r"/api/create")
-def api_create(url):
-	global ALL_USERS,USER_LOGIN_URLS
-	dt,ok=_validate("create",{"name":{"t":str,"p":"body"},"level":{"t":int,"p":"body","range":[0,2]}},body=True)
-	if (ok==False):
-		return dt
-	server.set_code(200)
-	server.set_header("Content-Type","application/json")
-	_tl.acquire()
-	id_=secrets.token_hex(ID_LEN)
-	while (id_=="0"*ID_LEN*2 or id_ in ALL_USERS):
+def install():
+	@server.route("POST",r"/api/create")
+	def api_create(url):
+		global ALL_USERS,USER_LOGIN_URLS
+		dt,ok=_validate("create",{"name":{"t":str,"p":"body"},"level":{"t":int,"p":"body","range":[0,2]}},body=True)
+		if (ok==False):
+			return dt
+		server.set_code(200)
+		server.set_header("Content-Type","application/json")
+		_tl.acquire()
 		id_=secrets.token_hex(ID_LEN)
-	ALL_USERS[id_]={"nm":dt["name"].title(),"lvl":dt["level"],"a":0}
-	l_id=secrets.token_hex(URL_ID_LEN)
-	while (l_id in USER_LOGIN_URLS):
+		while (id_=="0"*ID_LEN*2 or id_ in ALL_USERS):
+			id_=secrets.token_hex(ID_LEN)
+		ALL_USERS[id_]={"nm":dt["name"].title(),"lvl":dt["level"],"a":0}
 		l_id=secrets.token_hex(URL_ID_LEN)
-	USER_LOGIN_URLS[l_id]=(id_,int(time.time())+EXP_START_TIME)
-	_tl.release()
-	return {"url":f"/play/{l_id}"}
-
-
-
-@server.route("GET",r"/api/storyline")
-def api_storyline(url):
-	server.set_code(200)
-	server.set_header("Content-Type","application/json")
-	return storage.read("storyline.json")
-
-
-
-@server.route("PUT",r"/api/answer")
-def api_answer(url):
-	global ALL_USERS
-	dt,ok=_validate("answer",{"a":{"t":int,"p":"body"}},body=True)
-	if (ok==False):
-		return dt
-	server.set_code(200)
-	server.set_header("Content-Type","text/plain")
-	tk=read_token()
-	if (tk is None or not is_valid(tk)):
+		while (l_id in USER_LOGIN_URLS):
+			l_id=secrets.token_hex(URL_ID_LEN)
+		USER_LOGIN_URLS[l_id]=(id_,int(time.time())+EXP_START_TIME)
+		_tl.release()
+		return {"url":f"/play/{l_id}"}
+	@server.route("GET",r"/api/storyline")
+	def api_storyline(url):
+		server.set_code(200)
+		server.set_header("Content-Type","application/json")
+		return storage.read("storyline.json")
+	@server.route("PUT",r"/api/answer")
+	def api_answer(url):
+		global ALL_USERS
+		dt,ok=_validate("answer",{"a":{"t":int,"p":"body"}},body=True)
+		if (ok==False):
+			return dt
+		server.set_code(200)
+		server.set_header("Content-Type","text/plain")
+		tk=read_token()
+		if (tk is None or not is_valid(tk)):
+			return b""
+		_tl.acquire()
+		ALL_USERS[tk]["a"]+=max(dt["a"],0)
+		_tl.release()
+		utils.print(str(ALL_USERS))
 		return b""
-	_tl.acquire()
-	ALL_USERS[tk]["a"]+=max(dt["a"],0)
-	_tl.release()
-	utils.print(str(ALL_USERS))
-	return b""
